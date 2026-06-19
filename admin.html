@@ -86,6 +86,11 @@
             border-radius: 8px; padding: 8px 12px; font-weight: 600; font-size: 0.85rem;
         }
         .btn-excluir:hover { background: #C0392B; color: #fff; }
+        .btn-editar {
+            background: transparent; color: var(--confirmado); border: 1px solid #BCD3EC;
+            border-radius: 8px; padding: 8px 12px; font-weight: 600; font-size: 0.85rem;
+        }
+        .btn-editar:hover { background: var(--confirmado); color: #fff; }
 
         /* ===== MODAL NOVO PEDIDO ===== */
         .modal-overlay {
@@ -159,8 +164,8 @@
     <!-- ===== MODAL: NOVO PEDIDO MANUAL ===== -->
     <div class="modal-overlay" id="modal-novo">
         <div class="modal">
-            <h2>Novo pedido</h2>
-            <p class="muted">Lançar um pedido feito por telefone, presencial, etc.</p>
+            <h2 id="np-titulo">Novo pedido</h2>
+            <p class="muted" id="np-subtitulo">Lançar um pedido feito por telefone, presencial, etc.</p>
 
             <div class="campo">
                 <label for="np-nome">Nome do cliente</label>
@@ -180,7 +185,7 @@
             <p class="muted" style="font-size:0.78rem; margin-top:6px;">Comece a digitar pra escolher do cardápio (preço entra sozinho) — ou escreva um produto livre e digite o preço.</p>
 
             <div class="campo">
-                <label for="np-status">Status inicial</label>
+                <label for="np-status">Status</label>
                 <select id="np-status">
                     <option value="novo">Novo</option>
                     <option value="confirmado">Confirmado</option>
@@ -323,6 +328,7 @@
                     <ul class="pedido-itens">${itensHtml}</ul>
                     <div class="pedido-acoes">
                         <select class="status-sel" aria-label="Mudar status">${opcoes}</select>
+                        <button class="btn-editar" data-acao="editar" type="button">Editar</button>
                         <button class="btn-excluir" data-acao="excluir" type="button">Excluir</button>
                     </div>
                     <textarea class="notes" placeholder="Anotações (entrega, observações…)">${esc(p.notes)}</textarea>
@@ -355,6 +361,13 @@
             if (error) { alert('Não consegui salvar a anotação: ' + error.message); return; }
             if (p) p.notes = valor;
         }, true);
+
+        // Editar pedido (abre o modal preenchido)
+        elLista.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-acao="editar"]');
+            if (!btn) return;
+            abrirEdicao(btn.closest('.pedido').dataset.id);
+        });
 
         // Excluir pedido (com confirmação)
         elLista.addEventListener('click', async (e) => {
@@ -408,13 +421,16 @@
             return 'GR-' + s.slice(0, 4).padEnd(4, '0');
         }
 
-        function novaLinhaItem() {
+        function novaLinhaItem(item) {
             const row = document.createElement('div');
             row.className = 'item-row';
+            const nome = item ? esc(item.nome) : '';
+            const preco = (item && item.preco != null) ? Number(item.preco).toFixed(2) : '';
+            const qtd = item ? (parseInt(item.qtd, 10) || 1) : 1;
             row.innerHTML = `
-                <input type="text" class="it-nome" list="cardapio-list" placeholder="Buscar no cardápio ou escrever">
-                <input type="number" class="it-preco" placeholder="0,00" min="0" step="0.01" inputmode="decimal">
-                <input type="number" class="it-qtd" placeholder="1" min="1" step="1" value="1" inputmode="numeric">
+                <input type="text" class="it-nome" list="cardapio-list" placeholder="Buscar no cardápio ou escrever" value="${nome}">
+                <input type="number" class="it-preco" placeholder="0,00" min="0" step="0.01" inputmode="decimal" value="${preco}">
+                <input type="number" class="it-qtd" placeholder="1" min="1" step="1" value="${qtd}" inputmode="numeric">
                 <button type="button" class="rm" aria-label="Remover item">×</button>`;
             npItens.appendChild(row);
         }
@@ -433,16 +449,41 @@
             return total;
         }
 
-        function abrirModal() {
+        // null = criando um pedido novo; um id = editando esse pedido.
+        let editandoId = null;
+
+        function preencherModal({ nome, tel, notes, status, itens }) {
             npItens.innerHTML = '';
-            novaLinhaItem();
-            document.getElementById('np-nome').value = '';
-            document.getElementById('np-tel').value = '';
-            document.getElementById('np-notes').value = '';
-            document.getElementById('np-status').value = 'novo';
+            const lista = Array.isArray(itens) ? itens : [];
+            if (lista.length) lista.forEach(i => novaLinhaItem(i)); else novaLinhaItem();
+            document.getElementById('np-nome').value = nome || '';
+            document.getElementById('np-tel').value = tel || '';
+            document.getElementById('np-notes').value = notes || '';
+            document.getElementById('np-status').value = status || 'novo';
             npErro.textContent = '';
             recalcTotal();
             modal.classList.add('open');
+        }
+
+        function abrirModal() { // criar
+            editandoId = null;
+            document.getElementById('np-titulo').textContent = 'Novo pedido';
+            document.getElementById('np-subtitulo').textContent = 'Lançar um pedido feito por telefone, presencial, etc.';
+            document.getElementById('np-salvar').textContent = 'Salvar pedido';
+            preencherModal({ status: 'novo' });
+        }
+
+        function abrirEdicao(id) { // editar
+            const p = pedidos.find(x => String(x.id) === String(id));
+            if (!p) return;
+            editandoId = id;
+            document.getElementById('np-titulo').textContent = 'Editar pedido ' + (p.code || '');
+            document.getElementById('np-subtitulo').textContent = 'Altere itens, cliente, status ou anotações.';
+            document.getElementById('np-salvar').textContent = 'Salvar alterações';
+            preencherModal({
+                nome: p.customer_name, tel: p.customer_phone, notes: p.notes,
+                status: p.status, itens: p.items
+            });
         }
         function fecharModal() { modal.classList.remove('open'); }
 
@@ -474,8 +515,7 @@
             if (itens.length === 0) { npErro.textContent = 'Adicione pelo menos um item com nome e quantidade.'; return; }
             const btn = e.target;
             btn.disabled = true;
-            const pedido = {
-                code: gerarCodigoPedido(),
+            const dados = {
                 customer_name: document.getElementById('np-nome').value.trim() || null,
                 customer_phone: document.getElementById('np-tel').value.trim() || null,
                 items: itens,
@@ -483,7 +523,14 @@
                 status: document.getElementById('np-status').value,
                 notes: document.getElementById('np-notes').value.trim() || null
             };
-            const { error } = await sb.from('orders').insert(pedido);
+            let error;
+            if (editandoId) {
+                // Edição: mantém o code original (correlação com o WhatsApp).
+                ({ error } = await sb.from('orders').update(dados).eq('id', editandoId));
+            } else {
+                dados.code = gerarCodigoPedido();
+                ({ error } = await sb.from('orders').insert(dados));
+            }
             btn.disabled = false;
             if (error) { npErro.textContent = 'Não consegui salvar: ' + error.message; return; }
             fecharModal();
