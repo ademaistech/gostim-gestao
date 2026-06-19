@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Gostim da Roça — Painel de Pedidos</title>
+    <style>
+        :root {
+            --laranja: #E8602C;
+            --verde: #4A7C3A;
+            --creme: #FBF6EE;
+            --texto: #3A2E26;
+            --cinza: #8A7E74;
+            --borda: #E7DCCC;
+            --novo: #E8602C;
+            --confirmado: #2D7DD2;
+            --entregue: #7B61A8;
+            --pago: #4A7C3A;
+            --cancelado: #9A9A9A;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--creme);
+            color: var(--texto);
+            line-height: 1.5;
+            padding: 16px;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        h1 { font-size: 1.4rem; color: var(--laranja); }
+        .muted { color: var(--cinza); font-size: 0.85rem; }
+        button { font: inherit; cursor: pointer; }
+        .btn {
+            background: var(--laranja); color: #fff; border: none;
+            border-radius: 8px; padding: 10px 16px; font-weight: 600;
+        }
+        .btn:hover { opacity: 0.92; }
+        .btn-ghost { background: transparent; color: var(--cinza); border: 1px solid var(--borda); }
+
+        /* ===== LOGIN ===== */
+        #login { max-width: 360px; margin: 12vh auto 0; text-align: center; }
+        #login input {
+            width: 100%; padding: 12px; margin-top: 10px;
+            border: 1px solid var(--borda); border-radius: 8px; font: inherit;
+        }
+        #login .btn { width: 100%; margin-top: 14px; }
+        #login-erro { color: #C0392B; font-size: 0.85rem; margin-top: 10px; min-height: 1.2em; }
+
+        /* ===== DASHBOARD ===== */
+        #app { display: none; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+        .filtros { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0; }
+        .chip {
+            border: 1px solid var(--borda); background: #fff; color: var(--texto);
+            border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; font-weight: 600;
+        }
+        .chip.ativo { background: var(--texto); color: #fff; border-color: var(--texto); }
+
+        .pedido {
+            background: #fff; border: 1px solid var(--borda); border-left: 5px solid var(--cinza);
+            border-radius: 12px; padding: 14px; margin-bottom: 12px;
+        }
+        .pedido.s-novo { border-left-color: var(--novo); }
+        .pedido.s-confirmado { border-left-color: var(--confirmado); }
+        .pedido.s-entregue { border-left-color: var(--entregue); }
+        .pedido.s-pago { border-left-color: var(--pago); }
+        .pedido.s-cancelado { border-left-color: var(--cancelado); opacity: 0.7; }
+        .pedido-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .pedido-code { font-weight: 700; font-size: 1.05rem; }
+        .pedido-total { font-weight: 700; color: var(--verde); white-space: nowrap; }
+        .pedido-cliente { font-size: 0.9rem; margin: 4px 0; }
+        .pedido-cliente a { color: var(--confirmado); text-decoration: none; }
+        .pedido-itens { list-style: none; font-size: 0.9rem; margin: 8px 0; }
+        .pedido-itens li { padding: 2px 0; }
+        .pedido-acoes { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+        select, .notes {
+            border: 1px solid var(--borda); border-radius: 8px; padding: 8px; font: inherit; background: #fff;
+        }
+        .notes { width: 100%; margin-top: 8px; resize: vertical; min-height: 38px; }
+        #lista-vazia, #carregando { text-align: center; color: var(--cinza); padding: 40px 0; }
+    </style>
+</head>
+<body>
+    <!-- ===== LOGIN ===== -->
+    <div id="login">
+        <h1>Gostim da Roça</h1>
+        <p class="muted">Painel de pedidos</p>
+        <form id="login-form">
+            <input type="email" id="email" placeholder="Seu email" autocomplete="username" required>
+            <input type="password" id="senha" placeholder="Sua senha" autocomplete="current-password" required>
+            <button type="submit" class="btn">Entrar</button>
+            <p id="login-erro"></p>
+        </form>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="app">
+        <div class="topbar">
+            <div>
+                <h1>Pedidos</h1>
+                <p class="muted" id="resumo">—</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-ghost" id="atualizar">Atualizar</button>
+                <button class="btn btn-ghost" id="sair">Sair</button>
+            </div>
+        </div>
+
+        <div class="filtros" id="filtros">
+            <button class="chip ativo" data-filtro="todos">Todos</button>
+            <button class="chip" data-filtro="novo">Novos</button>
+            <button class="chip" data-filtro="confirmado">Confirmados</button>
+            <button class="chip" data-filtro="entregue">Entregues</button>
+            <button class="chip" data-filtro="pago">Pagos</button>
+            <button class="chip" data-filtro="cancelado">Cancelados</button>
+        </div>
+
+        <div id="carregando">Carregando pedidos…</div>
+        <div id="lista-vazia" style="display:none;">Nenhum pedido aqui ainda.</div>
+        <div id="lista"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Mesma chave PÚBLICA do site. A leitura dos pedidos só funciona depois
+        // do login (RLS exige usuário autenticado = a Kátia).
+        const SUPABASE_URL = 'https://wyieoakhbvirzxmqafqc.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_YDyR3jgYd17ExRMN6GJYcw_hiu7j0e9';
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const STATUS = ['novo', 'confirmado', 'entregue', 'pago', 'cancelado'];
+        const STATUS_LABEL = {
+            novo: 'Novo', confirmado: 'Confirmado', entregue: 'Entregue',
+            pago: 'Pago', cancelado: 'Cancelado'
+        };
+
+        const elLogin = document.getElementById('login');
+        const elApp = document.getElementById('app');
+        const elLista = document.getElementById('lista');
+        const elCarregando = document.getElementById('carregando');
+        const elVazia = document.getElementById('lista-vazia');
+        const elResumo = document.getElementById('resumo');
+
+        let pedidos = [];
+        let filtroAtual = 'todos';
+
+        const fmtBRL = (n) => 'R$ ' + Number(n).toFixed(2).replace('.', ',');
+        const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => (
+            { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+        ));
+        const soDigitos = (t) => String(t || '').replace(/\D/g, '');
+
+        function fmtData(iso) {
+            const d = new Date(iso);
+            return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ===== AUTENTICAÇÃO =====
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const erro = document.getElementById('login-erro');
+            erro.textContent = '';
+            const { error } = await sb.auth.signInWithPassword({
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('senha').value
+            });
+            if (error) { erro.textContent = 'Email ou senha incorretos.'; return; }
+            mostrarApp();
+        });
+
+        document.getElementById('sair').addEventListener('click', async () => {
+            await sb.auth.signOut();
+            elApp.style.display = 'none';
+            elLogin.style.display = 'block';
+        });
+
+        async function mostrarApp() {
+            elLogin.style.display = 'none';
+            elApp.style.display = 'block';
+            await carregarPedidos();
+        }
+
+        // ===== CARREGAR / RENDERIZAR =====
+        async function carregarPedidos() {
+            elCarregando.style.display = 'block';
+            elVazia.style.display = 'none';
+            elLista.innerHTML = '';
+            const { data, error } = await sb
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false });
+            elCarregando.style.display = 'none';
+            if (error) {
+                elLista.innerHTML = `<p style="color:#C0392B">Erro ao carregar: ${esc(error.message)}</p>`;
+                return;
+            }
+            pedidos = data || [];
+            render();
+        }
+
+        function render() {
+            const lista = filtroAtual === 'todos'
+                ? pedidos
+                : pedidos.filter(p => p.status === filtroAtual);
+
+            const novos = pedidos.filter(p => p.status === 'novo').length;
+            elResumo.textContent = `${pedidos.length} no total · ${novos} novo(s)`;
+
+            if (lista.length === 0) {
+                elVazia.style.display = 'block';
+                elLista.innerHTML = '';
+                return;
+            }
+            elVazia.style.display = 'none';
+
+            elLista.innerHTML = lista.map(p => {
+                const itens = Array.isArray(p.items) ? p.items : [];
+                const itensHtml = itens.map(i =>
+                    `<li>• ${esc(i.qtd)}x ${esc(i.nome)} — ${fmtBRL((i.preco || 0) * (i.qtd || 0))}</li>`
+                ).join('');
+                const tel = soDigitos(p.customer_phone);
+                const wa = tel ? (tel.length <= 11 ? '55' + tel : tel) : '';
+                const clienteHtml = (p.customer_name || p.customer_phone)
+                    ? `<p class="pedido-cliente">👤 ${esc(p.customer_name || 'Sem nome')}` +
+                      (wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener">${esc(p.customer_phone)}</a>` : '') +
+                      `</p>`
+                    : `<p class="pedido-cliente muted">Sem dados de contato — confira pelo WhatsApp via código.</p>`;
+                const opcoes = STATUS.map(s =>
+                    `<option value="${s}" ${s === p.status ? 'selected' : ''}>${STATUS_LABEL[s]}</option>`
+                ).join('');
+                return `
+                <div class="pedido s-${esc(p.status)}" data-id="${esc(p.id)}">
+                    <div class="pedido-head">
+                        <span class="pedido-code">${esc(p.code)}</span>
+                        <span class="pedido-total">${fmtBRL(p.total)}</span>
+                    </div>
+                    <p class="muted">${fmtData(p.created_at)}</p>
+                    ${clienteHtml}
+                    <ul class="pedido-itens">${itensHtml}</ul>
+                    <div class="pedido-acoes">
+                        <select class="status-sel" aria-label="Mudar status">${opcoes}</select>
+                    </div>
+                    <textarea class="notes" placeholder="Anotações (entrega, observações…)">${esc(p.notes)}</textarea>
+                </div>`;
+            }).join('');
+        }
+
+        // ===== AÇÕES (delegação) =====
+        elLista.addEventListener('change', async (e) => {
+            if (!e.target.classList.contains('status-sel')) return;
+            const card = e.target.closest('.pedido');
+            const id = card.dataset.id;
+            const novoStatus = e.target.value;
+            const { error } = await sb.from('orders').update({ status: novoStatus }).eq('id', id);
+            if (error) { alert('Não consegui salvar o status: ' + error.message); return; }
+            const p = pedidos.find(x => String(x.id) === String(id));
+            if (p) p.status = novoStatus;
+            render();
+        });
+
+        // Salva anotação ao sair do campo (blur)
+        elLista.addEventListener('blur', async (e) => {
+            if (!e.target.classList.contains('notes')) return;
+            const card = e.target.closest('.pedido');
+            const id = card.dataset.id;
+            const valor = e.target.value.trim() || null;
+            const p = pedidos.find(x => String(x.id) === String(id));
+            if (p && (p.notes || '') === (valor || '')) return; // nada mudou
+            const { error } = await sb.from('orders').update({ notes: valor }).eq('id', id);
+            if (error) { alert('Não consegui salvar a anotação: ' + error.message); return; }
+            if (p) p.notes = valor;
+        }, true);
+
+        // ===== FILTROS =====
+        document.getElementById('filtros').addEventListener('click', (e) => {
+            const chip = e.target.closest('.chip');
+            if (!chip) return;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('ativo'));
+            chip.classList.add('ativo');
+            filtroAtual = chip.dataset.filtro;
+            render();
+        });
+
+        document.getElementById('atualizar').addEventListener('click', carregarPedidos);
+
+        // ===== INÍCIO: já logado? =====
+        (async () => {
+            const { data } = await sb.auth.getSession();
+            if (data.session) mostrarApp();
+        })();
+    </script>
+</body>
+</html>

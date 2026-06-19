@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gostim da Roça — Temperos caseiros, antepastos e patês artesanais feitos à mão, sem conservantes. Sabor que abraça. Peça pelo WhatsApp.">
+    <meta name="keywords" content="temperos caseiros, antepastos artesanais, patê artesanal, tomate seco, molho pesto, Minas Gerais, sem conservantes">
+    <meta property="og:title" content="Gostim da Roça — Sabor que alimenta e abraça">
+    <meta property="og:description" content="Temperos caseiros, antepastos e patês artesanais feitos à mão por Kátia, direto da roça para sua mesa. Sem conservantes.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <title>Gostim da Roça — Temperos, Antepastos e Patês Artesanais</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== DESIGN SYSTEM ========== */
+        :root {
+            --terra: #2D1810;
+            --laranja: #C4581A;
+            --marsala: #8B1A1A;
+            --pergaminho: #F5E6D0;
+            --verde: #4A6B2A;
+            --branco: #FFF8F0;
+            --terra-light: #4A3228;
+            --laranja-hover: #A8470F;
+            --sombra: rgba(45, 24, 16, 0.15);
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 40px;
+            --space-xl: 64px;
+            --space-2xl: 96px;
+            --max-width: 1120px;
+            --radius: 8px;
+            --radius-lg: 16px;
+        }
+
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+        /* Compensa o cabeçalho fixo ao pular para âncoras (#cardapio, #faq, etc.) */
+        section[id] { scroll-margin-top: 80px; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--terra);
+            background: var(--branco);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.2; }
+        h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; }
+        h3 { font-size: clamp(1.3rem, 2.5vw, 1.6rem); font-weight: 700; }
+        p { font-size: clamp(1rem, 1.1vw, 1.125rem); }
+
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--laranja);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fade-up { opacity: 1; transform: none; transition: none; }
+            html { scroll-behavior: auto; }
+        }
+
+        /* ========== HEADER / NAV ========== */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(45, 24, 16, 0.95);
+            backdrop-filter: blur(8px);
+            padding: var(--space-sm) 0;
+            transition: box-shadow 0.3s;
+        }
+        .site-header.scrolled {
+            box-shadow: 0 2px 20px var(--sombra);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--branco);
+        }
+        .nav-logo span { color: var(--laranja); }
+        .nav-links {
+            display: flex;
+            gap: var(--space-md);
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--pergaminho);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--laranja); }
+        .nav-toggle {
+            display: none;
+            background: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 4px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--branco);
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 56px;
+                left: 0;
+                right: 0;
+                background: var(--terra);
+                flex-direction: column;
+                padding: var(--space-md);
+                gap: var(--space-sm);
+                transform: translateY(-120%);
+                transition: transform 0.3s;
+            }
+            .nav-links.open { transform: translateY(0); }
+            .nav-toggle { display: flex; }
+        }
+
+        /* ========== HERO ========== */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: var(--terra);
+            overflow: hidden;
+            padding-top: 72px;
+        }
+        .hero-bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.06;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,248,240,0.3) 40px, rgba(255,248,240,0.3) 41px),
+                repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,248,240,0.3) 40px, rgba(255,248,240,0.3) 41px);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+        .hero-text { color: var(--branco); }
+        .hero-text h1 { margin-bottom: var(--space-md); }
+        .hero-text h1 .accent { color: var(--laranja); display: block; }
+        .hero-text .subheadline {
+            font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+            color: var(--pergaminho);
+            opacity: 0.9;
+            margin-bottom: var(--space-lg);
+            max-width: 480px;
+        }
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Logo Text */
+        .logo-hero {
+            font-family: 'Great Vibes', cursive;
+            text-align: center;
+            animation: logo-float 6s ease-in-out infinite;
+            user-select: none;
+        }
+        .logo-hero .logo-line1 {
+            font-size: clamp(4rem, 8vw, 6.5rem);
+            color: var(--branco);
+            text-shadow:
+                2px 2px 0 var(--marsala),
+                -1px -1px 0 var(--marsala),
+                1px -1px 0 var(--marsala),
+                -1px 1px 0 var(--marsala),
+                3px 3px 6px rgba(0,0,0,0.3);
+            line-height: 0.9;
+            display: block;
+        }
+        .logo-hero .logo-line2 {
+            font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+            color: var(--branco);
+            text-shadow:
+                2px 2px 0 var(--marsala),
+                -1px -1px 0 var(--marsala),
+                1px -1px 0 var(--marsala),
+                -1px 1px 0 var(--marsala),
+                3px 3px 6px rgba(0,0,0,0.3);
+            line-height: 1;
+            display: block;
+            margin-top: 4px;
+        }
+        .logo-hero .logo-tagline {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--laranja);
+            margin-top: var(--space-sm);
+            display: block;
+        }
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(1.5deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .logo-hero { animation: none; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: var(--space-lg) 0;
+            }
+            .hero-text .subheadline { margin-left: auto; margin-right: auto; }
+            .hero-visual { order: -1; }
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius);
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary {
+            background: var(--laranja);
+            color: var(--branco);
+        }
+        .btn-primary:hover { background: var(--laranja-hover); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--branco);
+            border: 2px solid var(--pergaminho);
+        }
+        .btn-secondary:hover { background: rgba(255,248,240,0.1); }
+        .btn-whatsapp {
+            background: #25D366;
+            color: #fff;
+        }
+        .btn-whatsapp:hover { background: #1EBE57; }
+        .btn-whatsapp svg { width: 20px; height: 20px; fill: #fff; }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .hero-buttons { justify-content: center; }
+        }
+
+        /* ========== HERB DIVIDER ========== */
+        .herb-divider {
+            display: flex;
+            justify-content: center;
+            padding: var(--space-md) 0;
+            opacity: 0.5;
+        }
+
+        /* ========== SECTION: DOR ========== */
+        #problema {
+            background: var(--branco);
+            padding: var(--space-2xl) 0;
+        }
+        .problema-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+        .problema-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .problema-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 1.05rem;
+        }
+        .problema-list li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            margin-top: 8px;
+            background: var(--marsala);
+            border-radius: 50%;
+        }
+        .problema-quote {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.5rem;
+            color: var(--marsala);
+            border-left: 4px solid var(--laranja);
+            padding-left: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        @media (max-width: 768px) {
+            .problema-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ========== SECTION: SOLUÇÃO ========== */
+        #solucao {
+            background: var(--terra);
+            color: var(--branco);
+            padding: var(--space-2xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        #solucao .hero-bg-pattern { opacity: 0.04; }
+        .solucao-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .solucao-content h2 { margin-bottom: var(--space-md); }
+        .solucao-content h2 span { color: var(--laranja); }
+        .solucao-content p {
+            color: var(--pergaminho);
+            font-size: 1.15rem;
+            margin-bottom: var(--space-lg);
+        }
+        .solucao-features {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            flex-wrap: wrap;
+            margin-top: var(--space-lg);
+        }
+        .solucao-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        .solucao-feature .icon-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(196, 88, 26, 0.2);
+            border: 2px solid var(--laranja);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .solucao-feature .icon-circle svg { width: 32px; height: 32px; }
+        .solucao-feature span {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ========== SECTION: PRODUTOS ========== */
+        #produtos {
+            background: var(--pergaminho);
+            padding: var(--space-2xl) 0;
+        }
+        .produtos-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .produtos-header h2 { color: var(--terra); }
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-md);
+        }
+        .produto-card {
+            background: var(--branco);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--sombra);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .produto-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(45, 24, 16, 0.2);
+        }
+        .produto-card-img {
+            height: 220px;
+            overflow: hidden;
+        }
+        .produto-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .produto-card:hover .produto-card-img img {
+            transform: scale(1.05);
+        }
+        .produto-card-body {
+            padding: var(--space-md);
+        }
+        .produto-card-body h3 {
+            color: var(--marsala);
+            margin-bottom: var(--space-xs);
+        }
+        .produto-card-body p {
+            font-size: 0.95rem;
+            color: var(--terra-light);
+            margin-bottom: var(--space-sm);
+        }
+        .produto-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--verde);
+            background: rgba(74, 107, 42, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* ========== SECTION: BENEFÍCIOS ========== */
+        #beneficios {
+            background: var(--branco);
+            padding: var(--space-2xl) 0;
+        }
+        .beneficios-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .beneficios-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+        .beneficio-item {
+            display: flex;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--pergaminho);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--laranja);
+        }
+        .beneficio-item .b-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: var(--laranja);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .beneficio-item .b-icon svg { width: 24px; height: 24px; fill: var(--branco); }
+        .beneficio-item h3 {
+            font-size: 1.1rem;
+            color: var(--terra);
+            margin-bottom: 4px;
+        }
+        .beneficio-item p {
+            font-size: 0.92rem;
+            color: var(--terra-light);
+        }
+
+        @media (max-width: 768px) {
+            .beneficios-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ========== SECTION: PROVA SOCIAL ========== */
+        #depoimentos {
+            background: var(--terra);
+            color: var(--branco);
+            padding: var(--space-2xl) 0;
+            position: relative;
+        }
+        .depoimentos-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .depoimentos-header .section-label { color: var(--pergaminho); }
+        .depoimentos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+        .depoimento-card {
+            background: var(--terra-light);
+            padding: var(--space-md);
+            border-radius: var(--radius-lg);
+            border-top: 3px solid var(--laranja);
+        }
+        .depoimento-stars {
+            color: var(--laranja);
+            font-size: 1.2rem;
+            margin-bottom: var(--space-sm);
+        }
+        .depoimento-text {
+            font-style: italic;
+            color: var(--pergaminho);
+            margin-bottom: var(--space-sm);
+            line-height: 1.7;
+        }
+        .depoimento-author {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--laranja);
+        }
+        .depoimento-role {
+            font-size: 0.8rem;
+            color: var(--pergaminho);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .depoimentos-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ========== SECTION: OFERTA / CARDÁPIO ========== */
+        #cardapio {
+            background: var(--pergaminho);
+            padding: var(--space-2xl) 0;
+        }
+        .cardapio-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .selo-sem-conservantes {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: var(--space-md);
+            padding: 8px 18px;
+            background: rgba(74, 107, 42, 0.12);
+            border: 1.5px solid var(--verde);
+            border-radius: 30px;
+            color: var(--verde);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .selo-sem-conservantes svg { width: 18px; height: 18px; fill: var(--verde); }
+        .google-review {
+            margin: var(--space-xl) auto 0;
+            max-width: 540px;
+            text-align: center;
+            background: var(--branco);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: 0 2px 12px var(--sombra);
+        }
+        .google-review .google-stars {
+            color: #FBBC04;
+            font-size: 1.6rem;
+            letter-spacing: 3px;
+            margin-bottom: var(--space-xs);
+        }
+        .google-review h3 { color: var(--terra); margin-bottom: var(--space-xs); }
+        .google-review p { color: var(--terra-light); margin-bottom: var(--space-md); }
+        .btn-google {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--terra);
+            color: var(--branco);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius);
+            font-weight: 700;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-google:hover { background: var(--terra-light); }
+        .btn-google:active { transform: scale(0.97); }
+        .btn-google svg { width: 20px; height: 20px; background: #fff; border-radius: 50%; padding: 2px; }
+        .cardapio-wrapper {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        .cardapio-lista {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .cardapio-categoria {
+            background: var(--branco);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: 0 2px 12px var(--sombra);
+        }
+        .cardapio-categoria h3 {
+            color: var(--marsala);
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 2px solid var(--pergaminho);
+        }
+        .cardapio-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-xs) 0;
+        }
+        .cardapio-item + .cardapio-item {
+            border-top: 1px dashed rgba(45,24,16,0.15);
+        }
+        .cardapio-item-info { flex: 1; }
+        .cardapio-item-name { font-weight: 600; }
+        .cardapio-item-desc {
+            font-size: 0.85rem;
+            color: var(--terra-light);
+        }
+        .cardapio-item-acoes {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 6px;
+            flex-shrink: 0;
+            min-width: 168px;
+        }
+        .preco-opcao {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--space-xs);
+        }
+        .preco-opcao .tam-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--terra-light);
+            background: var(--pergaminho);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+        .cardapio-item-preco {
+            font-weight: 700;
+            color: var(--marsala);
+            font-size: 1.02rem;
+            white-space: nowrap;
+            min-width: 74px;
+            text-align: right;
+        }
+        .btn-add {
+            background: var(--laranja);
+            color: var(--branco);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .btn-add:hover { background: var(--laranja-hover); }
+        .btn-add:active { transform: scale(0.9); }
+        .cardapio-cta-box {
+            background: var(--terra);
+            color: var(--branco);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            position: sticky;
+            top: 80px;
+        }
+        .cardapio-cta-box h3 {
+            color: var(--branco);
+            margin-bottom: var(--space-sm);
+        }
+        .cardapio-cta-box p {
+            color: var(--pergaminho);
+            margin-bottom: var(--space-md);
+        }
+        .cardapio-cta-box .logo-hero {
+            margin: 0 auto var(--space-sm);
+        }
+
+        @media (max-width: 768px) {
+            .cardapio-wrapper { grid-template-columns: 1fr; }
+            /* No mobile, o box "Monte seu pedido" aparece antes da lista de produtos */
+            .cardapio-cta-box { position: static; order: -1; }
+            .cardapio-lista { order: 0; }
+        }
+
+        /* ========== CARRINHO ========== */
+        .cart-fab {
+            position: fixed;
+            bottom: var(--space-md);
+            right: var(--space-md);
+            z-index: 95;
+            display: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--laranja);
+            color: var(--branco);
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(45,24,16,0.35);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .cart-fab.show { display: flex; }
+        .cart-fab:hover { background: var(--laranja-hover); transform: scale(1.05); }
+        .cart-fab svg { width: 26px; height: 26px; fill: var(--branco); }
+        .cart-fab .cart-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--marsala);
+            color: #fff;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            border: 2px solid var(--branco);
+        }
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45,24,16,0.6);
+            z-index: 110;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .cart-overlay.open { opacity: 1; visibility: visible; }
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 420px;
+            background: var(--branco);
+            z-index: 111;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.2);
+        }
+        .cart-drawer.open { transform: translateX(0); }
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md);
+            background: var(--terra);
+            color: var(--branco);
+        }
+        .cart-header h3 { color: var(--branco); }
+        .cart-close {
+            background: none;
+            color: var(--branco);
+            font-size: 1.8rem;
+            line-height: 1;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .cart-close:hover { background: rgba(255,255,255,0.15); }
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-md);
+        }
+        .cart-empty {
+            text-align: center;
+            color: var(--terra-light);
+            padding: var(--space-2xl) var(--space-md);
+        }
+        .cart-empty svg { width: 64px; height: 64px; fill: rgba(45,24,16,0.15); margin: 0 auto var(--space-md); }
+        .cart-line {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px dashed rgba(45,24,16,0.15);
+        }
+        .cart-line-info { flex: 1; }
+        .cart-line-name { font-weight: 700; font-size: 0.95rem; }
+        .cart-line-price { font-size: 0.85rem; color: var(--terra-light); }
+        .cart-qty {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .cart-qty button {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--pergaminho);
+            color: var(--terra);
+            font-size: 1.1rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .cart-qty button:hover { background: var(--laranja); color: var(--branco); }
+        .cart-qty span {
+            min-width: 24px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .cart-line-total {
+            font-weight: 700;
+            color: var(--marsala);
+            min-width: 70px;
+            text-align: right;
+            font-size: 0.95rem;
+        }
+        .cart-footer {
+            padding: var(--space-md);
+            padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+            border-top: 2px solid var(--pergaminho);
+            background: var(--branco);
+        }
+        .cart-data-campo {
+            margin-bottom: var(--space-md);
+        }
+        .cart-data-campo label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--terra);
+            margin-bottom: 6px;
+        }
+        .cart-data-campo input {
+            width: 100%;
+            padding: 10px var(--space-sm);
+            border: 2px solid rgba(45,24,16,0.15);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--terra);
+            background: var(--branco);
+            transition: border-color 0.2s;
+        }
+        .cart-data-campo input:focus {
+            outline: none;
+            border-color: var(--laranja);
+        }
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--terra);
+        }
+        .cart-total-row span:last-child { color: var(--marsala); }
+        .cart-footer .btn { width: 100%; justify-content: center; }
+        .cart-clear {
+            background: none;
+            color: var(--terra-light);
+            font-size: 0.85rem;
+            text-decoration: underline;
+            margin-top: var(--space-sm);
+            width: 100%;
+            text-align: center;
+        }
+        .cart-clear:hover { color: var(--marsala); }
+
+        /* No mobile o FAB some — o acesso ao carrinho fica na barra inferior fixa */
+        @media (max-width: 768px) {
+            .cart-fab.show { display: none; }
+        }
+
+        /* Botão de carrinho dentro da sticky bar (mobile) */
+        .sticky-cart-btn {
+            display: none;
+            width: 100%;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            font-size: 1rem;
+            padding: 14px var(--space-md);
+        }
+        .sticky-cart-btn .sticky-cart-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        .sticky-cart-btn svg { width: 20px; height: 20px; fill: var(--branco); }
+        .sticky-cart-btn .sticky-cart-total { font-weight: 700; }
+        body.cart-has-items .sticky-whats { display: none; }
+        body.cart-has-items .sticky-cart-btn { display: flex; }
+
+        /* ========== SECTION: FAQ ========== */
+        #faq {
+            background: var(--branco);
+            padding: var(--space-2xl) 0;
+        }
+        .faq-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        .faq-list {
+            max-width: 740px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .faq-item {
+            background: var(--pergaminho);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            padding: var(--space-sm) var(--space-md);
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--terra);
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .faq-question:hover { color: var(--marsala); }
+        .faq-question .faq-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-question .faq-icon { transform: rotate(45deg); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+        .faq-answer-inner {
+            padding: 0 var(--space-md) var(--space-sm);
+            color: var(--terra-light);
+            line-height: 1.7;
+        }
+
+        /* ========== SECTION: CTA FINAL ========== */
+        #cta-final {
+            background: var(--marsala);
+            color: var(--branco);
+            padding: var(--space-2xl) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        #cta-final::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(196,88,26,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(196,88,26,0.2) 0%, transparent 50%);
+        }
+        .cta-final-content {
+            position: relative;
+            z-index: 2;
+        }
+        .cta-final-content h2 {
+            margin-bottom: var(--space-sm);
+            font-size: clamp(2rem, 4vw, 3rem);
+        }
+        .cta-final-content p {
+            font-size: 1.2rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.9;
+        }
+        .cta-final-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ========== FORM ========== */
+        #contato {
+            background: var(--pergaminho);
+            padding: var(--space-2xl) 0;
+        }
+        .contato-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+        .contato-info h2 { margin-bottom: var(--space-sm); }
+        .contato-info p { margin-bottom: var(--space-md); color: var(--terra-light); }
+        .contato-dados {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .contato-dado {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .contato-dado svg { width: 20px; height: 20px; fill: var(--laranja); flex-shrink: 0; }
+        .contato-form {
+            background: var(--branco);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 20px var(--sombra);
+        }
+        .form-group {
+            margin-bottom: var(--space-sm);
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            color: var(--terra);
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px var(--space-sm);
+            border: 2px solid rgba(45,24,16,0.15);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background: var(--branco);
+            color: var(--terra);
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--laranja);
+        }
+        .form-group textarea { resize: vertical; min-height: 100px; }
+        .form-group .error-msg {
+            font-size: 0.8rem;
+            color: var(--marsala);
+            margin-top: 4px;
+            display: none;
+        }
+        .form-group.has-error input,
+        .form-group.has-error textarea,
+        .form-group.has-error select {
+            border-color: var(--marsala);
+        }
+        .form-group.has-error .error-msg { display: block; }
+        .form-submit {
+            width: 100%;
+            padding: var(--space-sm);
+            font-size: 1.1rem;
+        }
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: var(--space-lg);
+        }
+        .form-success h3 { color: var(--verde); margin-bottom: var(--space-xs); }
+        .form-success p { color: var(--terra-light); }
+
+        @media (max-width: 768px) {
+            .contato-wrapper { grid-template-columns: 1fr; }
+        }
+
+        /* ========== FOOTER ========== */
+        .site-footer {
+            background: var(--terra);
+            color: var(--pergaminho);
+            padding: var(--space-lg) 0 var(--space-sm);
+        }
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        .footer-brand {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--branco);
+        }
+        .footer-brand span { color: var(--laranja); }
+        .footer-links {
+            display: flex;
+            gap: var(--space-md);
+            list-style: none;
+        }
+        .footer-links a {
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--laranja); }
+        .footer-social {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--terra-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .footer-social a:hover { background: var(--laranja); }
+        .footer-social svg { width: 18px; height: 18px; fill: var(--branco); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: var(--space-md);
+            margin-top: var(--space-md);
+            border-top: 1px solid rgba(245,230,208,0.15);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* ========== STICKY CTA MOBILE ========== */
+        .sticky-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--terra);
+            padding: var(--space-sm);
+            padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+            z-index: 99;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+        }
+        .sticky-cta .btn {
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+            padding: 14px;
+        }
+        @media (max-width: 768px) {
+            .sticky-cta { display: block; }
+            .site-footer { padding-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" id="site-header">
+        <div class="container">
+            <nav class="nav-inner">
+                <a href="#hero" class="nav-logo">Gostim <span>da Roça</span></a>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#cardapio">Cardápio</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#faq">Dúvidas</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section id="hero">
+            <div class="hero-bg-pattern"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <p class="section-label" style="color: var(--pergaminho); opacity:0.7;">Temperos & Antepastos Artesanais</p>
+                        <h1>
+                            Tem sabor que alimenta...
+                            <span class="accent">e tem sabor que abraça.</span>
+                        </h1>
+                        <p class="subheadline">
+                            Temperos caseiros, antepastos e patês feitos à mão, sem conservantes — direto da roça pra sua mesa ficar completa.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="https://wa.me/5531998546605?text=Ol%C3%A1%20K%C3%A1tia!%20Vi%20o%20site%20e%20quero%20fazer%20um%20pedido." class="btn btn-whatsapp" target="_blank" rel="noopener">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                Quero pedir pelo WhatsApp
+                            </a>
+                            <a href="#produtos" class="btn btn-secondary">Ver produtos</a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="logo-hero">
+                            <span class="logo-line1">Gostim</span>
+                            <span class="logo-line2">da Roça</span>
+                            <span class="logo-tagline">Feito à mão · Sem conservantes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== HERB DIVIDER ===== -->
+        <div class="herb-divider" aria-hidden="true">
+            <svg width="200" height="30" viewBox="0 0 200 30" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0" y1="15" x2="70" y2="15" stroke="#C4581A" stroke-width="1" opacity="0.4"/>
+                <g transform="translate(85,5)" opacity="0.6">
+                    <path d="M15,20 Q12,8 5,2 Q12,6 15,0 Q18,6 25,2 Q18,8 15,20Z" fill="#4A6B2A"/>
+                </g>
+                <line x1="130" y1="15" x2="200" y2="15" stroke="#C4581A" stroke-width="1" opacity="0.4"/>
+            </svg>
+        </div>
+
+        <!-- ===== PROBLEMA / DOR ===== -->
+        <section id="problema">
+            <div class="container">
+                <div class="problema-grid">
+                    <div class="fade-up">
+                        <p class="section-label">Você já sentiu isso?</p>
+                        <h2>Cozinhar perdeu a graça<br>com tempero de prateleira!?</h2>
+                        <ul class="problema-list" style="margin-top: var(--space-md);">
+                            <li>Aquele alho e sal do mercado que não tem cheiro de nada;</li>
+                            <li>Antepastos industrializados com gosto de conservante;</li>
+                            <li>Você se esforça no prato, mas o tempero não acompanha;</li>
+                            <li>Seus convidados elogiam, mas você sabe que falta "aquele algo."</li>
+                        </ul>
+                    </div>
+                    <div class="fade-up" style="transition-delay: 0.15s;">
+                        <div class="problema-quote">
+                            "Seu paladar nunca mais será o mesmo."
+                        </div>
+                        <p style="margin-top: var(--space-md); color: var(--terra-light);">
+                            O segredo não é a receita — é o tempero. Quando os ingredientes são frescos,
+                            selecionados à mão e preparados com cuidado, o sabor muda. Seu paladar reconhece.
+                            Seus convidados percebem. A mesa inteira se transforma.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SOLUÇÃO ===== -->
+        <section id="solucao">
+            <div class="hero-bg-pattern"></div>
+            <div class="container">
+                <div class="solucao-content fade-up">
+                    <p class="section-label" style="color: var(--pergaminho);">A resposta está na roça</p>
+                    <h2>Pequenos detalhes <span>mudam tudo</span></h2>
+                    <p>
+                        Gostim da Roça são temperos, antepastos e patês feitos de forma artesanal, —
+                        com ingredientes frescos, sem nenhum conservante, e com o carinho de quem
+                        aprendeu a cozinhar no fogão a lenha.
+                    </p>
+                    <div class="solucao-features">
+                        <div class="solucao-feature fade-up">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#C4581A" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7z"/>
+                                    <circle cx="12" cy="9" r="2.5"/>
+                                </svg>
+                            </div>
+                            <span>Minas Gerais</span>
+                        </div>
+                        <div class="solucao-feature fade-up" style="transition-delay: 0.1s;">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#C4581A" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 21h10M12 3v3M5.6 9h12.8M6 14l1-5h10l1 5M8 14v3a1 1 0 001 1h6a1 1 0 001-1v-3"/>
+                                </svg>
+                            </div>
+                            <span>Feito à mão</span>
+                        </div>
+                        <div class="solucao-feature fade-up" style="transition-delay: 0.2s;">
+                            <div class="icon-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#C4581A" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 22s-8-4.5-8-11a8 8 0 0116 0c0 6.5-8 11-8 11z"/>
+                                    <path d="M12 13V8M9.5 10.5L12 8l2.5 2.5"/>
+                                </svg>
+                            </div>
+                            <span>Sem conservantes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PRODUTOS ===== -->
+        <section id="produtos">
+            <div class="container">
+                <div class="produtos-header fade-up">
+                    <p class="section-label">Nossos produtos</p>
+                    <h2>Da roça direto pra sua mesa</h2>
+                </div>
+                <div class="produtos-grid">
+                    <article class="produto-card fade-up">
+                        <div class="produto-card-img">
+                            <img src="Instagram1_files/692665459_18134410786551584_1942689840145910361_n.jpg" alt="Antepastos artesanais servidos em bowls de vidro com pães artesanais sobre tábua de madeira" loading="lazy">
+                        </div>
+                        <div class="produto-card-body">
+                            <h3>Antepastos</h3>
+                            <p>Antepasto de berinjela, tomate seco e molho pesto — cada um com textura e sabor que transformam qualquer aperitivo.</p>
+                            <span class="produto-tag">Artesanal</span>
+                        </div>
+                    </article>
+                    <article class="produto-card fade-up" style="transition-delay: 0.1s;">
+                        <div class="produto-card-img">
+                            <img src="Instagram1_files/684290456_18134215972551584_834600696632743888_n.jpg" alt="Patê de frango defumado e cream cheese artesanais em bowls de vidro com pães" loading="lazy">
+                        </div>
+                        <div class="produto-card-body">
+                            <h3>Patês & Cremes</h3>
+                            <p>Patê de frango defumado (com ou sem cebola), patê de tomate seco com cream cheese e mousse de abacaxi com frango defumado.</p>
+                            <span class="produto-tag">Receita exclusiva</span>
+                        </div>
+                    </article>
+                    <article class="produto-card fade-up" style="transition-delay: 0.2s;">
+                        <div class="produto-card-img">
+                            <img src="Instagram1_files/671204984_18132997714551584_8899201013206035590_n.jpg" alt="Antepastos sobre tábua de madeira com espigas de trigo decorando, visual rústico e acolhedor" loading="lazy">
+                        </div>
+                        <div class="produto-card-body">
+                            <h3>Temperos Caseiros</h3>
+                            <p>Mais de 12 variações de alho e sal — com alho-poró, especiarias, pimenta calabresa, cheiro verde, açafrão e muito mais.</p>
+                            <span class="produto-tag">Sem conservantes</span>
+                        </div>
+                    </article>
+                    <article class="produto-card fade-up" style="transition-delay: 0.3s;">
+                        <div class="produto-card-img">
+                            <img src="Instagram1_files/651252490_18070731626223298_2766686774874788053_n.jpg" alt="Tricolore - pote com camadas de tomate seco, molho pesto e cream cheese, inspirado na bandeira italiana" loading="lazy">
+                        </div>
+                        <div class="produto-card-body">
+                            <h3>Tricolore</h3>
+                            <p>Inspirado na bandeira italiana: tomate seco, molho pesto e cream cheese em camadas. O queridinho dos clientes.</p>
+                            <span class="produto-tag">Ô CAMPEÃO</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BENEFÍCIOS ===== -->
+        <section id="beneficios">
+            <div class="container">
+                <div class="beneficios-header fade-up">
+                    <p class="section-label">Por que escolher Gostim da Roça</p>
+                    <h2>Não é só tempero. É o que faltava na sua cozinha.</h2>
+                </div>
+                <div class="beneficios-grid">
+                    <div class="beneficio-item fade-up">
+                        <div class="b-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Ingredientes que você reconhece</h3>
+                            <p>Nada de rótulos com 20 componentes químicos. Aqui é alho, sal, ervas, azeite — e pronto.</p>
+                        </div>
+                    </div>
+                    <div class="beneficio-item fade-up" style="transition-delay: 0.1s;">
+                        <div class="b-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Feito com carinho de verdade</h3>
+                            <p>A Kátia prepara cada pote à mão. Não é produção em massa — é comida feita como sua avó faria.</p>
+                        </div>
+                    </div>
+                    <div class="beneficio-item fade-up" style="transition-delay: 0.2s;">
+                        <div class="b-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Seus convidados vão pedir a receita</h3>
+                            <p>O segredo não é a receita do prato — é o tempero que vai nele. E esse segredo agora é seu.</p>
+                        </div>
+                    </div>
+                    <div class="beneficio-item fade-up" style="transition-delay: 0.3s;">
+                        <div class="b-icon">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+                        </div>
+                        <div>
+                            <h3>Atendimento direto com quem faz</h3>
+                            <p>Você fala com a Kátia pelo WhatsApp, tira dúvidas, personaliza e recebe com entrega combinada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DEPOIMENTOS ===== -->
+        <section id="depoimentos">
+            <div class="container">
+                <div class="depoimentos-header fade-up">
+                    <p class="section-label" style="color: var(--pergaminho); opacity: 0.7;">Quem provou, aprovou</p>
+                    <h2>Você nunca provou um trem bão assim!</h2>
+                </div>
+                <div class="depoimentos-grid">
+                    <div class="depoimento-card fade-up">
+                        <div class="depoimento-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="depoimento-text">"Desde que comprei o alho e sal da Kátia, não consigo mais usar outro. O cheiro quando abre o pote é absurdo. Minha família toda já virou cliente."</p>
+                        <p class="depoimento-author">Fernanda M.</p>
+                        <p class="depoimento-role">Cozinheira por paixão — BH</p>
+                    </div>
+                    <div class="depoimento-card fade-up" style="transition-delay: 0.1s;">
+                        <div class="depoimento-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="depoimento-text">"Uso o antepasto de berinjela no meu restaurante. Os clientes perguntam de onde vem, e eu digo com orgulho: é artesanal, de Minas. Virou carro-chefe do couvert."</p>
+                        <p class="depoimento-author">Chef Ricardo L.</p>
+                        <p class="depoimento-role">Restaurante — Região Metropolitana</p>
+                    </div>
+                    <div class="depoimento-card fade-up" style="transition-delay: 0.2s;">
+                        <div class="depoimento-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="depoimento-text">"O Tricolore é uma obra de arte. Comprei pra um jantar e todo mundo queria saber onde eu achei. Agora peço toda semana. É viciante no bom sentido!"</p>
+                        <p class="depoimento-author">Marina S.</p>
+                        <p class="depoimento-role">Cliente fiel desde 2023</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CARDÁPIO / OFERTA ===== -->
+        <section id="cardapio">
+            <div class="container">
+                <div class="cardapio-header fade-up">
+                    <p class="section-label">Cardápio completo</p>
+                    <h2>Escolha seus favoritos</h2>
+                    <span class="selo-sem-conservantes">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        Todos os produtos sem conservantes
+                    </span>
+                </div>
+                <div class="cardapio-wrapper">
+                    <div class="cardapio-lista" id="cardapio-lista">
+                        <!-- Catalogo gerado via JS a partir da lista PRODUTOS (veja o topo do <script>) -->
+                    </div>
+                    <div class="cardapio-cta-box fade-up">
+                        <div class="logo-hero" style="animation:none; margin-bottom: var(--space-sm);">
+                            <span class="logo-line1" style="font-size: 2.8rem;">Gostim</span>
+                            <span class="logo-line2" style="font-size: 2rem;">da Roça</span>
+                        </div>
+                        <h3>Monte seu pedido</h3>
+                        <p>Toque no <strong>+</strong> ao lado de cada produto para adicionar ao carrinho. Quando terminar, é só finalizar pelo WhatsApp.</p>
+                        <button class="btn btn-primary" id="cardapio-ver-carrinho" style="width: 100%; justify-content: center;">
+                            Ver meu carrinho
+                        </button>
+                        <p style="margin-top: var(--space-sm); font-size: 0.85rem; opacity: 0.7;">Pedido enviado direto pro WhatsApp da Kátia</p>
+                    </div>
+                </div>
+
+                <div class="google-review fade-up">
+                    <div class="google-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <h3>Já provou e gostou?</h3>
+                    <p>Sua avaliação ajuda mais gente a conhecer o Gostim da Roça. Leva só um minutinho!</p>
+                    <a href="https://g.page/r/CW1Ms4dEHJ9cEAE/review" class="btn-google" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Avaliar no Google
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FAQ ===== -->
+        <section id="faq">
+            <div class="container">
+                <div class="faq-header fade-up">
+                    <p class="section-label">Dúvidas frequentes</p>
+                    <h2>Perguntas que sempre aparecem</h2>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item fade-up">
+                        <button class="faq-question" aria-expanded="false">
+                            Os produtos têm conservante?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Nenhum. Todos os produtos são 100% caseiros, feitos com ingredientes naturais e sem nenhum tipo de conservante ou aditivo químico. Por isso, devem ser armazenados na geladeira.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-up" style="transition-delay: 0.05s;">
+                        <button class="faq-question" aria-expanded="false">
+                            Qual a validade dos produtos?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Por serem artesanais e sem conservantes, os produtos têm validade mais curta que industrializados. A validade é específica de cada produto e é informada no momento do pedido. Armazene sempre refrigerado.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-up" style="transition-delay: 0.1s;">
+                        <button class="faq-question" aria-expanded="false">
+                            Como faço para pedir?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Direto pelo WhatsApp com a Kátia no número (31) 99854-6605. Você escolhe os produtos, combina a entrega e pronto. Atendimento pessoal e rápido.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-up" style="transition-delay: 0.15s;">
+                        <button class="faq-question" aria-expanded="false">
+                            Vocês entregam? Onde?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Sim! A entrega é combinada diretamente com a Kátia. Atendemos Belo Horizonte, Santa Luzia e região metropolitana. Para outras localidades, entre em contato para verificar possibilidade.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-up" style="transition-delay: 0.2s;">
+                        <button class="faq-question" aria-expanded="false">
+                            Posso personalizar os temperos?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Com certeza! A Kátia oferece opções de acréscimo nos antepastos (chia, linhaça, castanhas, damasco, nozes) e variações nos temperos. Converse com ela pelo WhatsApp para montar o combo perfeito pra você.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-item fade-up" style="transition-delay: 0.25s;">
+                        <button class="faq-question" aria-expanded="false">
+                            Atende restaurantes e eventos?
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                Sim! Vários restaurantes já usam os produtos Gostim da Roça no couvert e em receitas. Para pedidos em maior quantidade ou fornecimento regular, converse com a Kátia para condições especiais.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA FINAL ===== -->
+        <section id="cta-final">
+            <div class="container">
+                <div class="cta-final-content fade-up">
+                    <h2>Se tem Gostim da Roça,<br>a mesa fica completa.</h2>
+                    <p>Fale com a Kátia agora e descubra como transformar suas refeições com sabor de verdade.</p>
+                    <div class="cta-final-buttons">
+                        <a href="https://wa.me/5531998546605?text=Ol%C3%A1%20K%C3%A1tia!%20Quero%20experimentar%20os%20produtos%20Gostim%20da%20Ro%C3%A7a!" class="btn btn-whatsapp" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;fill:#fff;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Quero experimentar agora
+                        </a>
+                        <a href="#contato" class="btn btn-secondary" style="border-color: #fff;">Enviar mensagem</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTATO / FORM ===== -->
+        <section id="contato">
+            <div class="container">
+                <div class="contato-wrapper">
+                    <div class="contato-info fade-up">
+                        <p class="section-label">Fale conosco</p>
+                        <h2>Tem uma pergunta? Quer fazer um pedido especial?</h2>
+                        <p>Preencha o formulário ou entre em contato direto. A Kátia responde rapidinho.</p>
+                        <div class="contato-dados">
+                            <div class="contato-dado">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                (31) 99854-6605
+                            </div>
+                            <div class="contato-dado">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                                @gostim_daroca
+                            </div>
+                            <div class="contato-dado">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                Belo Horizonte — MG
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contato-form fade-up" id="contato-form" novalidate>
+                        <div class="form-group">
+                            <label for="form-nome">Seu nome *</label>
+                            <input type="text" id="form-nome" name="nome" required placeholder="Como podemos te chamar?">
+                            <p class="error-msg">Por favor, informe seu nome.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-telefone">WhatsApp *</label>
+                            <input type="tel" id="form-telefone" name="telefone" required placeholder="(31) 99999-9999">
+                            <p class="error-msg">Informe um número de WhatsApp válido.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-interesse">O que te interessa?</label>
+                            <select id="form-interesse" name="interesse">
+                                <option value="">Selecione uma opção</option>
+                                <option value="temperos">Temperos caseiros</option>
+                                <option value="antepastos">Antepastos</option>
+                                <option value="pates">Patês e cremes</option>
+                                <option value="combo">Quero montar um combo</option>
+                                <option value="restaurante">Fornecimento para restaurante</option>
+                                <option value="evento">Encomenda para evento</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-mensagem">Sua mensagem</label>
+                            <textarea id="form-mensagem" name="mensagem" placeholder="Conte o que precisa, pergunte sobre produtos, quantidades..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary form-submit">Enviar mensagem para Kátia</button>
+                        <div class="form-success" id="form-success">
+                            <h3>Mensagem enviada!</h3>
+                            <p>A Kátia vai te responder em breve pelo WhatsApp. Enquanto isso, que tal seguir o <a href="https://instagram.com/gostim_daroca" target="_blank" rel="noopener" style="color: var(--laranja); font-weight: 700;">@gostim_daroca</a>?</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">Gostim <span>da Roça</span></div>
+                <ul class="footer-links">
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#cardapio">Cardápio</a></li>
+                    <li><a href="#faq">Dúvidas</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+                <div class="footer-social">
+                    <a href="https://instagram.com/gostim_daroca" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="https://wa.me/5531998546605" target="_blank" rel="noopener" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 Gostim da Roça — Kátia Silveira. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== CARRINHO FLUTUANTE ===== -->
+    <button class="cart-fab" id="cart-fab" aria-label="Abrir carrinho">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        <span class="cart-count" id="cart-count">0</span>
+    </button>
+
+    <!-- ===== DRAWER DO CARRINHO ===== -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-label="Carrinho de compras" aria-hidden="true">
+        <div class="cart-header">
+            <h3>Seu pedido</h3>
+            <button class="cart-close" id="cart-close" aria-label="Fechar carrinho">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- itens renderizados via JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-data-campo">
+                <label for="cart-nome">Seu nome</label>
+                <input type="text" id="cart-nome" name="cart-nome" placeholder="Como a Kátia te chama?" autocomplete="name">
+            </div>
+            <div class="cart-data-campo">
+                <label for="cart-tel">Seu WhatsApp</label>
+                <input type="tel" id="cart-tel" name="cart-tel" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric">
+            </div>
+            <div class="cart-data-campo">
+                <label for="cart-data">📅 Para quando você precisa?</label>
+                <input type="date" id="cart-data" name="cart-data">
+            </div>
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">R$ 0,00</span>
+            </div>
+            <button class="btn btn-whatsapp" id="cart-finalizar">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;fill:#fff;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Finalizar pedido pelo WhatsApp
+            </button>
+            <button class="cart-clear" id="cart-clear">Esvaziar carrinho</button>
+        </div>
+    </aside>
+
+    <!-- ===== STICKY CTA MOBILE ===== -->
+    <div class="sticky-cta" id="sticky-cta">
+        <a href="https://wa.me/5531998546605?text=Ol%C3%A1%20K%C3%A1tia!%20Quero%20fazer%20um%20pedido!" class="btn btn-whatsapp sticky-whats" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;fill:#fff;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir pelo WhatsApp
+        </a>
+        <button class="btn btn-primary sticky-cart-btn" id="sticky-cart-btn">
+            <span class="sticky-cart-left">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                Ver carrinho (<span id="sticky-cart-count">0</span>)
+            </span>
+            <span class="sticky-cart-total" id="sticky-cart-total">R$ 0,00</span>
+        </button>
+    </div>
+
+    <script>
+        /* ============================================================
+           👇  LISTA DE PRODUTOS — EDITE AQUI
+           ------------------------------------------------------------
+           Cada produto tem um ou mais TAMANHOS, cada um com seu preço:
+             precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 17.00 } ]
+
+           • MUDAR PREÇO: altere o número em "preco" do tamanho.
+           • ADICIONAR TAMANHO: acrescente um { tam: '...', preco: ... } na lista "precos".
+           • ADICIONAR PRODUTO: copie um bloco { ... } inteiro e cole abaixo.
+           • REMOVER: apague o bloco { ... } (produto) ou a linha do tamanho.
+           Use PONTO nos preços (12.00) e mantenha as aspas nos textos.
+           "categoria" precisa ser um dos "id" definidos em CATEGORIAS.
+           O catálogo e o carrinho se atualizam sozinhos.
+           ============================================================ */
+        const CATEGORIAS = [
+            { id: 'temperos',   titulo: 'Temperos',           emoji: '🌶️' },
+            { id: 'antepastos', titulo: 'Patês & Antepastos', emoji: '🧀' },
+            { id: 'paes',       titulo: 'Pão Sírio',          emoji: '🥖' }
+        ];
+
+        const PRODUTOS = [
+            // --- Temperos ---
+            { nome: 'Alho puro',                          categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 21.00 } ] },
+            { nome: 'Alho e sal',                         categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 17.00 }, { tam: '1Kg', preco: 30.00 } ] },
+            { nome: 'Alho e sal com pimenta calabresa',   categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho e sal com cheiro verde',        desc: 'Com ou sem pimenta calabresa', categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho e sal com cebola',              categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho e sal com pimenta biquinho',    categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho e sal com alho-poró',           categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho puro, alho-poró e cebola',      categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
+            { nome: 'Alho e sal, alho-poró e cebola',     categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
+            { nome: 'Alho e sal e açafrão',               categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho e sal completo',                desc: 'Com ou sem pimenta calabresa', categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
+            { nome: 'Alho-poró e especiarias',            categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
+            { nome: 'Mix de sabores',                     desc: 'Alho-poró, cebola roxa, pimenta biquinho, salsinha, açafrão, louro e noz-moscada', categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
+            { nome: 'Alho e sal com especiarias',         desc: 'Embalagem de 1Kg — especiarias a escolher', categoria: 'temperos', precos: [ { tam: '1Kg', preco: 32.00 } ] },
+
+            // --- Patês & Antepastos ---
+            { nome: 'Tomate seco',                        categoria: 'antepastos', precos: [ { tam: '250g', preco: 20.00 }, { tam: '450g', preco: 33.00 } ] },
+            { nome: 'Antepasto de berinjela',             categoria: 'antepastos', precos: [ { tam: '250g', preco: 18.00 }, { tam: '450g', preco: 28.00 } ] },
+            { nome: 'Molho pesto',                        categoria: 'antepastos', precos: [ { tam: '200g', preco: 20.00 }, { tam: '400g', preco: 36.00 } ] },
+            { nome: 'Patê de frango defumado com pétalas de cebola', desc: 'Feito com maionese e creme de leite, com passas e azeitona preta', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
+            { nome: 'Patê de frango defumado sem cebola', desc: 'Feito com maionese e creme de leite, com passas e azeitona preta', categoria: 'antepastos', precos: [ { tam: '250g', preco: 32.00 }, { tam: '500g', preco: 52.00 } ] },
+            { nome: 'Patê de tomate seco',                desc: 'Feito com cream cheese e alcaparras', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
+            { nome: 'Mousse de abacaxi',                  desc: 'Feito com frango defumado', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
+            { nome: 'Tricolore',                          desc: 'Feito com pesto, cream cheese e tomate seco', categoria: 'antepastos', precos: [ { tam: '200g', preco: 24.00 }, { tam: '400g', preco: 37.00 } ] },
+
+            // --- Pão Sírio ---
+            { nome: 'Pão Sírio',                          desc: 'Pacote com 15 pães', categoria: 'paes', precos: [ { tam: 'Pacote', preco: 12.00 } ] }
+        ];
+        /* ====================  FIM DA LISTA  ==================== */
+
+        // Gera o catálogo na tela a partir da lista acima
+        (function renderCatalogo() {
+            const escAttr = (s) => String(s).replace(/"/g, '&quot;');
+            const escHtml = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const formatBRLc = (n) => 'R$ ' + Number(n).toFixed(2).replace('.', ',');
+            const lista = document.getElementById('cardapio-lista');
+            if (!lista) return;
+            let html = '';
+            CATEGORIAS.forEach((cat, ci) => {
+                const itens = PRODUTOS.filter(p => p.categoria === cat.id);
+                if (!itens.length) return;
+                html += `<div class="cardapio-categoria fade-up"${ci ? ` style="transition-delay: ${ci * 0.1}s;"` : ''}>`;
+                html += `<h3>${cat.emoji ? cat.emoji + ' ' : ''}${escHtml(cat.titulo)}</h3>`;
+                itens.forEach(p => {
+                    const precos = p.precos || [];
+                    const multi = precos.length > 1;
+                    const opcoes = precos.map(v => {
+                        // No carrinho, cada tamanho é um item próprio: "Nome (500g)"
+                        const nomeCarrinho = multi ? `${p.nome} (${v.tam})` : p.nome;
+                        const label = (multi || (v.tam && v.tam !== 'Pacote'))
+                            ? `<span class="tam-label">${escHtml(v.tam)}</span>` : '';
+                        return `
+                            <div class="preco-opcao">
+                                ${label}
+                                <span class="cardapio-item-preco">${formatBRLc(v.preco)}</span>
+                                <button class="btn-add" data-nome="${escAttr(nomeCarrinho)}" data-preco="${Number(v.preco).toFixed(2)}" aria-label="Adicionar ${escAttr(nomeCarrinho)} ao carrinho">+</button>
+                            </div>`;
+                    }).join('');
+                    html += `
+                        <div class="cardapio-item">
+                            <div class="cardapio-item-info">
+                                <p class="cardapio-item-name">${escHtml(p.nome)}</p>
+                                ${p.desc ? `<p class="cardapio-item-desc">${escHtml(p.desc)}</p>` : ''}
+                            </div>
+                            <div class="cardapio-item-acoes">${opcoes}</div>
+                        </div>`;
+                });
+                html += `</div>`;
+            });
+            lista.innerHTML = html;
+        })();
+
+        // ===== NAV TOGGLE =====
+        const navToggle = document.getElementById('nav-toggle');
+        const navLinks = document.getElementById('nav-links');
+        navToggle.addEventListener('click', () => {
+            const open = navLinks.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open);
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ===== HEADER SCROLL =====
+        const header = document.getElementById('site-header');
+        const stickyCta = document.getElementById('sticky-cta');
+        let lastScroll = 0;
+        // Mostra a barra inferior ao rolar — MAS sempre visível quando há itens no carrinho
+        function updateStickyVisibility() {
+            if (!stickyCta) return;
+            const temItens = document.body.classList.contains('cart-has-items');
+            const mostrar = temItens || window.scrollY > 600;
+            stickyCta.style.transform = mostrar ? 'translateY(0)' : 'translateY(100%)';
+        }
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            header.classList.toggle('scrolled', y > 50);
+            updateStickyVisibility();
+            lastScroll = y;
+        }, { passive: true });
+        stickyCta.style.transition = 'transform 0.3s';
+        updateStickyVisibility();
+
+        // ===== INTERSECTION OBSERVER (Fade-up) =====
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        } else {
+            document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+        }
+
+        // ===== FAQ ACCORDION =====
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const answer = item.querySelector('.faq-answer');
+                const isOpen = item.classList.contains('open');
+
+                document.querySelectorAll('.faq-item.open').forEach(openItem => {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                    openItem.querySelector('.faq-answer').style.maxHeight = '0';
+                });
+
+                if (!isOpen) {
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // ===== FORM VALIDATION =====
+        const form = document.getElementById('contato-form');
+        const formSuccess = document.getElementById('form-success');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let valid = true;
+
+            const nome = form.querySelector('#form-nome');
+            const tel = form.querySelector('#form-telefone');
+
+            // Reset errors
+            form.querySelectorAll('.form-group').forEach(g => g.classList.remove('has-error'));
+
+            if (!nome.value.trim()) {
+                nome.closest('.form-group').classList.add('has-error');
+                valid = false;
+            }
+            if (!tel.value.trim() || tel.value.replace(/\D/g, '').length < 10) {
+                tel.closest('.form-group').classList.add('has-error');
+                valid = false;
+            }
+
+            if (valid) {
+                const interesse = form.querySelector('#form-interesse').value;
+                const mensagem = form.querySelector('#form-mensagem').value;
+                const textoWa = `Olá Kátia! Sou ${nome.value.trim()}.` +
+                    (interesse ? ` Tenho interesse em: ${form.querySelector('#form-interesse option:checked').textContent}.` : '') +
+                    (mensagem ? ` ${mensagem}` : '') +
+                    ` (Mensagem enviada pelo site)`;
+
+                const waUrl = 'https://wa.me/5531998546605?text=' + encodeURIComponent(textoWa);
+                window.open(waUrl, '_blank');
+
+                form.style.display = 'none';
+                formSuccess.style.display = 'block';
+            }
+        });
+
+        // ===== PHONE MASK (reutilizada no form de contato e no carrinho) =====
+        function aplicarMascaraTelefone(el) {
+            if (!el) return;
+            el.addEventListener('input', function() {
+                let v = this.value.replace(/\D/g, '');
+                if (v.length > 11) v = v.slice(0, 11);
+                if (v.length > 6) {
+                    this.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+                } else if (v.length > 2) {
+                    this.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+                } else if (v.length > 0) {
+                    this.value = `(${v}`;
+                }
+            });
+        }
+        aplicarMascaraTelefone(document.getElementById('form-telefone'));
+        aplicarMascaraTelefone(document.getElementById('cart-tel'));
+
+        // ===== CARRINHO DE COMPRAS =====
+        const WHATS_NUMERO = '5531998546605';
+        let cart = [];
+
+        // ===== SUPABASE (captura de pedidos) =====
+        // Chave PÚBLICA (publishable) — pode ficar no código. A proteção dos dados
+        // é feita pelo RLS no banco: anon só CRIA pedido, nunca LÊ. Quem lê é a Kátia
+        // logada no /admin. Ver migração create_orders_table.
+        const SUPABASE_URL = 'https://wyieoakhbvirzxmqafqc.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_YDyR3jgYd17ExRMN6GJYcw_hiu7j0e9';
+
+        // Código curto do pedido (ex: "GR-4F2A"). Vai pro banco E pro texto do
+        // WhatsApp, pra Kátia casar a linha do /admin com a conversa.
+        function gerarCodigoPedido() {
+            const s = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '');
+            return 'GR-' + s.slice(0, 4).padEnd(4, '0');
+        }
+
+        // Grava o pedido no Supabase. Fire-and-forget: se falhar (rede/banco fora),
+        // NÃO bloqueia o WhatsApp — a venda importa mais que o registro.
+        function registrarPedido(pedido) {
+            try {
+                fetch(SUPABASE_URL + '/rest/v1/orders', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(pedido),
+                    keepalive: true // garante o envio mesmo se a aba abrir o WhatsApp logo em seguida
+                }).catch(() => {}); // silencioso de propósito: nunca atrapalha o pedido
+            } catch (e) { /* idem */ }
+        }
+
+        // Carregar carrinho salvo (sessionStorage: mantém durante a navegação,
+        // mas zera quando o cliente fecha a aba/página)
+        try {
+            localStorage.removeItem('gostim_cart'); // remove resíduo de versões anteriores
+            const saved = sessionStorage.getItem('gostim_cart');
+            if (saved) cart = JSON.parse(saved);
+        } catch (e) { cart = []; }
+
+        const cartFab = document.getElementById('cart-fab');
+        const cartCount = document.getElementById('cart-count');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartBody = document.getElementById('cart-body');
+        const cartTotalEl = document.getElementById('cart-total');
+        const stickyCartCount = document.getElementById('sticky-cart-count');
+        const stickyCartTotal = document.getElementById('sticky-cart-total');
+
+        const formatBRL = (n) => 'R$ ' + n.toFixed(2).replace('.', ',');
+
+        function saveCart() {
+            try { sessionStorage.setItem('gostim_cart', JSON.stringify(cart)); } catch (e) {}
+        }
+
+        function addToCart(nome, preco) {
+            const item = cart.find(i => i.nome === nome);
+            if (item) {
+                item.qtd += 1;
+            } else {
+                cart.push({ nome, preco, qtd: 1 });
+            }
+            saveCart();
+            renderCart();
+            // Feedback visual no FAB (desktop) e na barra do carrinho (mobile)
+            cartFab.style.transform = 'scale(1.15)';
+            setTimeout(() => { cartFab.style.transform = ''; }, 180);
+            const sb = document.getElementById('sticky-cart-btn');
+            if (sb) { sb.style.transform = 'scale(1.03)'; setTimeout(() => { sb.style.transform = ''; }, 180); }
+        }
+
+        function changeQty(nome, delta) {
+            const item = cart.find(i => i.nome === nome);
+            if (!item) return;
+            item.qtd += delta;
+            if (item.qtd <= 0) {
+                cart = cart.filter(i => i.nome !== nome);
+            }
+            saveCart();
+            renderCart();
+        }
+
+        function cartTotal() {
+            return cart.reduce((sum, i) => sum + i.preco * i.qtd, 0);
+        }
+
+        function cartCountTotal() {
+            return cart.reduce((sum, i) => sum + i.qtd, 0);
+        }
+
+        function renderCart() {
+            const totalItens = cartCountTotal();
+            const total = cartTotal();
+            cartCount.textContent = totalItens;
+            // FAB (desktop) via classe; barra inferior (mobile) via classe no body
+            cartFab.classList.toggle('show', totalItens > 0);
+            document.body.classList.toggle('cart-has-items', totalItens > 0);
+            stickyCartCount.textContent = totalItens;
+            stickyCartTotal.textContent = formatBRL(total);
+            if (typeof updateStickyVisibility === 'function') updateStickyVisibility();
+
+            if (cart.length === 0) {
+                cartBody.innerHTML = `
+                    <div class="cart-empty">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        <p>Seu carrinho está vazio.<br>Adicione produtos do cardápio!</p>
+                    </div>`;
+            } else {
+                cartBody.innerHTML = cart.map(i => `
+                    <div class="cart-line">
+                        <div class="cart-line-info">
+                            <p class="cart-line-name">${i.nome}</p>
+                            <p class="cart-line-price">${formatBRL(i.preco)} cada</p>
+                        </div>
+                        <div class="cart-qty">
+                            <button data-acao="menos" data-nome="${i.nome.replace(/"/g, '&quot;')}" aria-label="Diminuir">&minus;</button>
+                            <span>${i.qtd}</span>
+                            <button data-acao="mais" data-nome="${i.nome.replace(/"/g, '&quot;')}" aria-label="Aumentar">+</button>
+                        </div>
+                        <span class="cart-line-total">${formatBRL(i.preco * i.qtd)}</span>
+                    </div>
+                `).join('');
+            }
+            cartTotalEl.textContent = formatBRL(total);
+        }
+
+        function openCart() {
+            cartOverlay.classList.add('open');
+            cartDrawer.classList.add('open');
+            cartDrawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            cartOverlay.classList.remove('open');
+            cartDrawer.classList.remove('open');
+            cartDrawer.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        // Botões "adicionar" do cardápio (delegação — funciona com itens gerados via JS)
+        const cardapioLista = document.getElementById('cardapio-lista');
+        if (cardapioLista) {
+            cardapioLista.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-add');
+                if (!btn) return;
+                addToCart(btn.dataset.nome, parseFloat(btn.dataset.preco));
+            });
+        }
+
+        // Controles de quantidade dentro do carrinho (delegação)
+        cartBody.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-acao]');
+            if (!btn) return;
+            changeQty(btn.dataset.nome, btn.dataset.acao === 'mais' ? 1 : -1);
+        });
+
+        // Abrir / fechar
+        cartFab.addEventListener('click', openCart);
+        document.getElementById('sticky-cart-btn').addEventListener('click', openCart);
+        cartOverlay.addEventListener('click', closeCart);
+        document.getElementById('cart-close').addEventListener('click', closeCart);
+        document.getElementById('cardapio-ver-carrinho').addEventListener('click', () => {
+            if (cartCountTotal() === 0) {
+                document.getElementById('cardapio').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                openCart();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && cartDrawer.classList.contains('open')) closeCart();
+        });
+
+        // Esvaziar
+        document.getElementById('cart-clear').addEventListener('click', () => {
+            cart = [];
+            saveCart();
+            renderCart();
+        });
+
+        // Finalizar pedido pelo WhatsApp
+        document.getElementById('cart-finalizar').addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Adicione produtos ao carrinho antes de finalizar o pedido.');
+                return;
+            }
+            const codigo = gerarCodigoPedido();
+            const total = cartTotal();
+            const nome = (document.getElementById('cart-nome')?.value || '').trim();
+            const tel = (document.getElementById('cart-tel')?.value || '').trim();
+            const dataInput = document.getElementById('cart-data');
+            const dataDesejada = dataInput && dataInput.value ? dataInput.value : null;
+
+            let texto = `Olá Kátia!\nSegue o meu pedido (${codigo}):\n\n`;
+            cart.forEach(i => {
+                texto += `• ${i.qtd}x ${i.nome} — ${formatBRL(i.preco * i.qtd)}\n`;
+            });
+            texto += `\n*Total: ${formatBRL(total)}*\n`;
+            if (nome) texto += `\nNome: ${nome}\n`;
+
+            // Data desejada (se preenchida)
+            if (dataDesejada) {
+                const [ano, mes, dia] = dataDesejada.split('-');
+                texto += `\n📅 Preciso para: ${dia}/${mes}/${ano}\n`;
+            }
+
+            texto += '\nAguardo a confirmação para combinarmos a entrega.\nObrigado(a)!';
+
+            // Registra o pedido no Supabase ANTES de abrir o WhatsApp (fire-and-forget).
+            registrarPedido({
+                code: codigo,
+                customer_name: nome || null,
+                customer_phone: tel || null,
+                items: cart.map(i => ({ nome: i.nome, preco: i.preco, qtd: i.qtd })),
+                total: total,
+                status: 'novo',
+                notes: dataDesejada ? ('Preciso para: ' + dataDesejada) : null
+            });
+
+            const waUrl = `https://wa.me/${WHATS_NUMERO}?text=` + encodeURIComponent(texto);
+            window.open(waUrl, '_blank');
+        });
+
+        // Data mínima = hoje (não deixa escolher data passada)
+        (function(){
+            const di = document.getElementById('cart-data');
+            if (di) { const h = new Date(); di.min = `${h.getFullYear()}-${String(h.getMonth()+1).padStart(2,'0')}-${String(h.getDate()).padStart(2,'0')}`; }
+        })();
+
+        // Render inicial
+        renderCart();
+
+        // Rolagem confiável para âncora (#cardapio, etc.) com conteúdo dinâmico e imagens lazy:
+        // espera tudo carregar antes de posicionar, senão o navegador pula para o lugar errado.
+        function irParaAncora() {
+            if (!location.hash) return;
+            const alvo = document.querySelector(location.hash);
+            if (alvo) alvo.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+        if (location.hash) {
+            window.addEventListener('load', () => setTimeout(irParaAncora, 120));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# SO
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Logs / temporários
+*.log
+.tmp/
+
+# Vercel
+.vercel
