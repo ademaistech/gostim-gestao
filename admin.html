@@ -175,7 +175,9 @@
                 <span>Produto</span><span>Preço (un.)</span><span>Qtd</span><span></span>
             </div>
             <div id="np-itens"></div>
+            <datalist id="cardapio-list"></datalist>
             <button type="button" class="btn-excluir" id="np-add-item" style="margin-top:8px; color:var(--verde); border-color:#BBD2B0;">+ Adicionar item</button>
+            <p class="muted" style="font-size:0.78rem; margin-top:6px;">Comece a digitar pra escolher do cardápio (preço entra sozinho) — ou escreva um produto livre e digite o preço.</p>
 
             <div class="campo">
                 <label for="np-status">Status inicial</label>
@@ -201,6 +203,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Cardápio (mesma fonte da landing) — usado pra sugerir produtos e preço -->
+    <script src="produtos.js"></script>
     <script>
         // Mesma chave PÚBLICA do site. A leitura dos pedidos só funciona depois
         // do login (RLS exige usuário autenticado = a Kátia).
@@ -386,6 +390,18 @@
         const npTotalEl = document.getElementById('np-total');
         const npErro = document.getElementById('np-erro');
 
+        // Cardápio vindo de produtos.js: opções do datalist + mapa nome->preço.
+        // Se produtos.js não carregar, o painel segue funcionando só com produto livre.
+        const CARDAPIO = (typeof opcoesCardapio === 'function') ? opcoesCardapio() : [];
+        const PRECO_POR_NOME = Object.fromEntries(CARDAPIO.map(o => [o.nome, o.preco]));
+        (function preencherDatalist() {
+            const dl = document.getElementById('cardapio-list');
+            if (!dl) return;
+            dl.innerHTML = CARDAPIO.map(o =>
+                `<option value="${esc(o.nome)}">${fmtBRL(o.preco)}</option>`
+            ).join('');
+        })();
+
         // Código curto no mesmo formato do site (GR-XXXX).
         function gerarCodigoPedido() {
             const s = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -396,7 +412,7 @@
             const row = document.createElement('div');
             row.className = 'item-row';
             row.innerHTML = `
-                <input type="text" class="it-nome" placeholder="Ex: Antepasto de berinjela">
+                <input type="text" class="it-nome" list="cardapio-list" placeholder="Buscar no cardápio ou escrever">
                 <input type="number" class="it-preco" placeholder="0,00" min="0" step="0.01" inputmode="decimal">
                 <input type="number" class="it-qtd" placeholder="1" min="1" step="1" value="1" inputmode="numeric">
                 <button type="button" class="rm" aria-label="Remover item">×</button>`;
@@ -435,8 +451,16 @@
         document.getElementById('np-add-item').addEventListener('click', () => { novaLinhaItem(); recalcTotal(); });
         modal.addEventListener('click', (e) => { if (e.target === modal) fecharModal(); });
 
-        // Recalcular total e remover linha (delegação)
-        npItens.addEventListener('input', recalcTotal);
+        // Recalcular total; ao escolher um produto do cardápio, preenche o preço.
+        npItens.addEventListener('input', (e) => {
+            if (e.target.classList.contains('it-nome')) {
+                const preco = PRECO_POR_NOME[e.target.value.trim()];
+                if (preco != null) {
+                    e.target.closest('.item-row').querySelector('.it-preco').value = Number(preco).toFixed(2);
+                }
+            }
+            recalcTotal();
+        });
         npItens.addEventListener('click', (e) => {
             if (!e.target.classList.contains('rm')) return;
             if (npItens.querySelectorAll('.item-row').length > 1) e.target.closest('.item-row').remove();

@@ -1770,58 +1770,17 @@
         </button>
     </div>
 
+    <!-- Cardápio (fonte única, compartilhado com o painel admin.html) -->
+    <script src="produtos.js"></script>
     <script>
-        /* ============================================================
-           👇  LISTA DE PRODUTOS — EDITE AQUI
-           ------------------------------------------------------------
-           Cada produto tem um ou mais TAMANHOS, cada um com seu preço:
-             precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 17.00 } ]
-
-           • MUDAR PREÇO: altere o número em "preco" do tamanho.
-           • ADICIONAR TAMANHO: acrescente um { tam: '...', preco: ... } na lista "precos".
-           • ADICIONAR PRODUTO: copie um bloco { ... } inteiro e cole abaixo.
-           • REMOVER: apague o bloco { ... } (produto) ou a linha do tamanho.
-           Use PONTO nos preços (12.00) e mantenha as aspas nos textos.
-           "categoria" precisa ser um dos "id" definidos em CATEGORIAS.
-           O catálogo e o carrinho se atualizam sozinhos.
-           ============================================================ */
+        /* O cardápio (lista PRODUTOS) agora vive em produtos.js — fonte única.
+           Para editar produtos/preços, edite produtos.js.
+           CATEGORIAS continua aqui porque só a landing usa. */
         const CATEGORIAS = [
             { id: 'temperos',   titulo: 'Temperos',           emoji: '🌶️' },
             { id: 'antepastos', titulo: 'Patês & Antepastos', emoji: '🧀' },
             { id: 'paes',       titulo: 'Pão Sírio',          emoji: '🥖' }
         ];
-
-        const PRODUTOS = [
-            // --- Temperos ---
-            { nome: 'Alho puro',                          categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 21.00 } ] },
-            { nome: 'Alho e sal',                         categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 17.00 }, { tam: '1Kg', preco: 30.00 } ] },
-            { nome: 'Alho e sal com pimenta calabresa',   categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho e sal com cheiro verde',        desc: 'Com ou sem pimenta calabresa', categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho e sal com cebola',              categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho e sal com pimenta biquinho',    categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho e sal com alho-poró',           categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho puro, alho-poró e cebola',      categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
-            { nome: 'Alho e sal, alho-poró e cebola',     categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
-            { nome: 'Alho e sal e açafrão',               categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho e sal completo',                desc: 'Com ou sem pimenta calabresa', categoria: 'temperos', precos: [ { tam: '250g', preco: 12.00 }, { tam: '500g', preco: 19.00 } ] },
-            { nome: 'Alho-poró e especiarias',            categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
-            { nome: 'Mix de sabores',                     desc: 'Alho-poró, cebola roxa, pimenta biquinho, salsinha, açafrão, louro e noz-moscada', categoria: 'temperos', precos: [ { tam: '250g', preco: 14.00 }, { tam: '500g', preco: 22.00 } ] },
-            { nome: 'Alho e sal com especiarias',         desc: 'Embalagem de 1Kg — especiarias a escolher', categoria: 'temperos', precos: [ { tam: '1Kg', preco: 32.00 } ] },
-
-            // --- Patês & Antepastos ---
-            { nome: 'Tomate seco',                        categoria: 'antepastos', precos: [ { tam: '250g', preco: 20.00 }, { tam: '450g', preco: 33.00 } ] },
-            { nome: 'Antepasto de berinjela',             categoria: 'antepastos', precos: [ { tam: '250g', preco: 18.00 }, { tam: '450g', preco: 28.00 } ] },
-            { nome: 'Molho pesto',                        categoria: 'antepastos', precos: [ { tam: '200g', preco: 20.00 }, { tam: '400g', preco: 36.00 } ] },
-            { nome: 'Patê de frango defumado com pétalas de cebola', desc: 'Feito com maionese e creme de leite, com passas e azeitona preta', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
-            { nome: 'Patê de frango defumado sem cebola', desc: 'Feito com maionese e creme de leite, com passas e azeitona preta', categoria: 'antepastos', precos: [ { tam: '250g', preco: 32.00 }, { tam: '500g', preco: 52.00 } ] },
-            { nome: 'Patê de tomate seco',                desc: 'Feito com cream cheese e alcaparras', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
-            { nome: 'Mousse de abacaxi',                  desc: 'Feito com frango defumado', categoria: 'antepastos', precos: [ { tam: '250g', preco: 29.00 }, { tam: '500g', preco: 49.00 } ] },
-            { nome: 'Tricolore',                          desc: 'Feito com pesto, cream cheese e tomate seco', categoria: 'antepastos', precos: [ { tam: '200g', preco: 24.00 }, { tam: '400g', preco: 37.00 } ] },
-
-            // --- Pão Sírio ---
-            { nome: 'Pão Sírio',                          desc: 'Pacote com 15 pães', categoria: 'paes', precos: [ { tam: 'Pacote', preco: 12.00 } ] }
-        ];
-        /* ====================  FIM DA LISTA  ==================== */
 
         // Gera o catálogo na tela a partir da lista acima
         (function renderCatalogo() {
