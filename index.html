@@ -827,10 +827,15 @@
             transition: background 0.2s;
         }
         .cart-close:hover { background: rgba(255,255,255,0.15); }
-        .cart-body {
+        .cart-scroll {
             flex: 1;
             overflow-y: auto;
+        }
+        .cart-body {
             padding: var(--space-md);
+        }
+        .cart-campos {
+            padding: 0 var(--space-md) var(--space-md);
         }
         .cart-empty {
             text-align: center;
@@ -1727,22 +1732,26 @@
             <h3>Seu pedido</h3>
             <button class="cart-close" id="cart-close" aria-label="Fechar carrinho">&times;</button>
         </div>
-        <div class="cart-body" id="cart-body">
-            <!-- itens renderizados via JS -->
+        <div class="cart-scroll">
+            <div class="cart-body" id="cart-body">
+                <!-- itens renderizados via JS -->
+            </div>
+            <div class="cart-campos">
+                <div class="cart-data-campo">
+                    <label for="cart-nome">Seu nome</label>
+                    <input type="text" id="cart-nome" name="cart-nome" placeholder="Como a Kátia te chama?" autocomplete="name">
+                </div>
+                <div class="cart-data-campo">
+                    <label for="cart-tel">Seu WhatsApp</label>
+                    <input type="tel" id="cart-tel" name="cart-tel" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric">
+                </div>
+                <div class="cart-data-campo">
+                    <label for="cart-data">📅 Para quando você precisa?</label>
+                    <input type="date" id="cart-data" name="cart-data">
+                </div>
+            </div>
         </div>
         <div class="cart-footer">
-            <div class="cart-data-campo">
-                <label for="cart-nome">Seu nome</label>
-                <input type="text" id="cart-nome" name="cart-nome" placeholder="Como a Kátia te chama?" autocomplete="name">
-            </div>
-            <div class="cart-data-campo">
-                <label for="cart-tel">Seu WhatsApp</label>
-                <input type="tel" id="cart-tel" name="cart-tel" placeholder="(31) 99999-9999" autocomplete="tel" inputmode="numeric">
-            </div>
-            <div class="cart-data-campo">
-                <label for="cart-data">📅 Para quando você precisa?</label>
-                <input type="date" id="cart-data" name="cart-data">
-            </div>
             <div class="cart-total-row">
                 <span>Total</span>
                 <span id="cart-total">R$ 0,00</span>
