@@ -92,6 +92,43 @@
         }
         .btn-editar:hover { background: var(--confirmado); color: #fff; }
 
+        /* ===== ABAS / PERÍODO / DASHBOARD ===== */
+        .tabs { display: flex; gap: 6px; margin: 10px 0 2px; }
+        .tab {
+            border: 1px solid var(--borda); background: #fff; color: var(--texto);
+            border-radius: 999px; padding: 8px 18px; font-weight: 700; font-size: 0.9rem;
+        }
+        .tab.ativo { background: var(--laranja); color: #fff; border-color: var(--laranja); }
+        .periodo {
+            display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+            margin: 12px 0; padding: 10px; background: #fff; border: 1px solid var(--borda); border-radius: 10px;
+        }
+        .periodo .sep { color: var(--cinza); font-size: 0.8rem; }
+        .chip-p {
+            border: 1px solid var(--borda); background: #fff; color: var(--texto);
+            border-radius: 999px; padding: 5px 11px; font-size: 0.82rem; font-weight: 600;
+        }
+        .chip-p.ativo { background: var(--texto); color: #fff; border-color: var(--texto); }
+        .periodo input[type=date] { border: 1px solid var(--borda); border-radius: 8px; padding: 6px; font: inherit; }
+        .acoes-lista { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .acoes-lista .filtros { margin: 8px 0; }
+
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 4px 0 14px; }
+        .kpi { background: #fff; border: 1px solid var(--borda); border-radius: 12px; padding: 14px; }
+        .kpi .v { font-size: 1.5rem; font-weight: 800; color: var(--texto); line-height: 1.1; }
+        .kpi .l { font-size: 0.78rem; color: var(--cinza); margin-top: 4px; }
+        .kpi.destaque .v { color: var(--verde); }
+        .paineis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (max-width: 620px) { .paineis { grid-template-columns: 1fr; } }
+        .painel { background: #fff; border: 1px solid var(--borda); border-radius: 12px; padding: 14px; }
+        .painel h3 { font-size: 0.95rem; margin-bottom: 10px; color: var(--texto); }
+        .canvas-box { position: relative; height: 240px; }
+        .top-lista { list-style: none; }
+        .top-lista li { display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; border-bottom: 1px dashed var(--borda); font-size: 0.9rem; }
+        .top-lista li:last-child { border-bottom: none; }
+        .top-lista .top-v { font-weight: 700; color: var(--verde); white-space: nowrap; }
+        .dash-vazio { color: var(--cinza); text-align: center; padding: 36px 0; }
+
         /* ===== MODAL NOVO PEDIDO ===== */
         .modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
@@ -137,7 +174,7 @@
     <div id="app">
         <div class="topbar">
             <div>
-                <h1>Pedidos</h1>
+                <h1 id="titulo-app">Pedidos</h1>
                 <p class="muted" id="resumo">—</p>
             </div>
             <div style="display:flex; gap:8px;">
@@ -147,18 +184,55 @@
             </div>
         </div>
 
-        <div class="filtros" id="filtros">
-            <button class="chip ativo" data-filtro="todos">Todos</button>
-            <button class="chip" data-filtro="novo">Novos</button>
-            <button class="chip" data-filtro="confirmado">Confirmados</button>
-            <button class="chip" data-filtro="entregue">Entregues</button>
-            <button class="chip" data-filtro="pago">Pagos</button>
-            <button class="chip" data-filtro="cancelado">Cancelados</button>
+        <div class="tabs">
+            <button class="tab ativo" data-aba="pedidos">Pedidos</button>
+            <button class="tab" data-aba="dashboard">Dashboard</button>
         </div>
 
-        <div id="carregando">Carregando pedidos…</div>
-        <div id="lista-vazia" style="display:none;">Nenhum pedido aqui ainda.</div>
-        <div id="lista"></div>
+        <!-- Período compartilhado (lista + dashboard) -->
+        <div class="periodo" id="periodo">
+            <span class="sep">Período:</span>
+            <button class="chip-p ativo" data-periodo="tudo">Tudo</button>
+            <button class="chip-p" data-periodo="hoje">Hoje</button>
+            <button class="chip-p" data-periodo="7d">7 dias</button>
+            <button class="chip-p" data-periodo="30d">30 dias</button>
+            <button class="chip-p" data-periodo="mes">Este mês</button>
+            <span class="sep">·</span>
+            <input type="date" id="periodo-de" aria-label="De">
+            <span class="sep">até</span>
+            <input type="date" id="periodo-ate" aria-label="Até">
+        </div>
+
+        <!-- ABA PEDIDOS -->
+        <div id="aba-pedidos">
+            <div class="acoes-lista">
+                <div class="filtros" id="filtros">
+                    <button class="chip ativo" data-filtro="todos">Todos</button>
+                    <button class="chip" data-filtro="novo">Novos</button>
+                    <button class="chip" data-filtro="confirmado">Confirmados</button>
+                    <button class="chip" data-filtro="entregue">Entregues</button>
+                    <button class="chip" data-filtro="pago">Pagos</button>
+                    <button class="chip" data-filtro="cancelado">Cancelados</button>
+                </div>
+                <button class="btn btn-ghost" id="exportar">⬇ Exportar Excel</button>
+            </div>
+
+            <div id="carregando">Carregando pedidos…</div>
+            <div id="lista-vazia" style="display:none;">Nenhum pedido aqui ainda.</div>
+            <div id="lista"></div>
+        </div>
+
+        <!-- ABA DASHBOARD -->
+        <div id="aba-dashboard" style="display:none;">
+            <div class="kpis" id="kpis"></div>
+            <div class="paineis" id="paineis">
+                <div class="painel"><h3>Vendas no tempo (pagos)</h3><div class="canvas-box"><canvas id="ch-vendas"></canvas></div></div>
+                <div class="painel"><h3>Pedidos por status</h3><div class="canvas-box"><canvas id="ch-status"></canvas></div></div>
+                <div class="painel"><h3>Top produtos (unidades)</h3><div class="canvas-box"><canvas id="ch-produtos"></canvas></div></div>
+                <div class="painel"><h3>Top clientes (valor)</h3><ul class="top-lista" id="top-clientes"></ul></div>
+            </div>
+            <div class="dash-vazio" id="dash-vazio" style="display:none;">Sem dados no período selecionado.</div>
+        </div>
     </div>
 
     <!-- ===== MODAL: NOVO PEDIDO MANUAL ===== -->
@@ -210,6 +284,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Cardápio (mesma fonte da landing) — usado pra sugerir produtos e preço -->
     <script src="produtos.js"></script>
+    <!-- Gráficos do dashboard e exportação Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script>
         // Mesma chave PÚBLICA do site. A leitura dos pedidos só funciona depois
         // do login (RLS exige usuário autenticado = a Kátia).
@@ -232,6 +309,9 @@
 
         let pedidos = [];
         let filtroAtual = 'todos';
+        let abaAtual = 'pedidos';
+        let periodo = { tipo: 'tudo', de: null, ate: null };
+        let charts = {};
 
         const fmtBRL = (n) => 'R$ ' + Number(n).toFixed(2).replace('.', ',');
         const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => (
@@ -284,16 +364,36 @@
                 return;
             }
             pedidos = data || [];
-            render();
+            atualizarTudo();
         }
 
-        function render() {
-            const lista = filtroAtual === 'todos'
-                ? pedidos
-                : pedidos.filter(p => p.status === filtroAtual);
+        // ===== PERÍODO (compartilhado por lista e dashboard) =====
+        function inicioDia(x) { const y = new Date(x); y.setHours(0, 0, 0, 0); return y; }
+        function dentroDoPeriodo(p) {
+            const d = new Date(p.created_at);
+            const hoje = new Date();
+            if (periodo.tipo === 'custom') {
+                if (periodo.de && d < inicioDia(periodo.de)) return false;
+                if (periodo.ate) { const fim = inicioDia(periodo.ate); fim.setHours(23, 59, 59, 999); if (d > fim) return false; }
+                return true;
+            }
+            if (periodo.tipo === 'hoje') return inicioDia(d).getTime() === inicioDia(hoje).getTime();
+            if (periodo.tipo === '7d') { const lim = inicioDia(hoje); lim.setDate(lim.getDate() - 6); return d >= lim; }
+            if (periodo.tipo === '30d') { const lim = inicioDia(hoje); lim.setDate(lim.getDate() - 29); return d >= lim; }
+            if (periodo.tipo === 'mes') return d.getMonth() === hoje.getMonth() && d.getFullYear() === hoje.getFullYear();
+            return true; // 'tudo'
+        }
+        const pedidosNoPeriodo = () => pedidos.filter(dentroDoPeriodo);
+        const pedidosVisiveis = () => pedidosNoPeriodo().filter(p => filtroAtual === 'todos' || p.status === filtroAtual);
 
-            const novos = pedidos.filter(p => p.status === 'novo').length;
-            elResumo.textContent = `${pedidos.length} no total · ${novos} novo(s)`;
+        // Atualiza a aba ativa (lista sempre; dashboard só se estiver visível).
+        function atualizarTudo() { render(); if (abaAtual === 'dashboard') renderDashboard(); }
+
+        function render() {
+            const lista = pedidosVisiveis();
+            const noPeriodo = pedidosNoPeriodo();
+            const novos = noPeriodo.filter(p => p.status === 'novo').length;
+            elResumo.textContent = `${noPeriodo.length} no período · ${novos} novo(s)`;
 
             if (lista.length === 0) {
                 elVazia.style.display = 'block';
@@ -385,14 +485,145 @@
             render();
         });
 
-        // ===== FILTROS =====
+        // ===== FILTROS DE STATUS =====
         document.getElementById('filtros').addEventListener('click', (e) => {
             const chip = e.target.closest('.chip');
             if (!chip) return;
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('ativo'));
+            document.querySelectorAll('#filtros .chip').forEach(c => c.classList.remove('ativo'));
             chip.classList.add('ativo');
             filtroAtual = chip.dataset.filtro;
             render();
+        });
+
+        // ===== FILTRO DE PERÍODO =====
+        const periodoDe = document.getElementById('periodo-de');
+        const periodoAte = document.getElementById('periodo-ate');
+        document.getElementById('periodo').addEventListener('click', (e) => {
+            const chip = e.target.closest('.chip-p');
+            if (!chip) return;
+            document.querySelectorAll('#periodo .chip-p').forEach(c => c.classList.remove('ativo'));
+            chip.classList.add('ativo');
+            periodo = { tipo: chip.dataset.periodo, de: null, ate: null };
+            periodoDe.value = ''; periodoAte.value = '';
+            atualizarTudo();
+        });
+        function aplicarCustom() {
+            if (!periodoDe.value && !periodoAte.value) return;
+            document.querySelectorAll('#periodo .chip-p').forEach(c => c.classList.remove('ativo'));
+            periodo = { tipo: 'custom', de: periodoDe.value || null, ate: periodoAte.value || null };
+            atualizarTudo();
+        }
+        periodoDe.addEventListener('change', aplicarCustom);
+        periodoAte.addEventListener('change', aplicarCustom);
+
+        // ===== TROCA DE ABA =====
+        document.querySelector('.tabs').addEventListener('click', (e) => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
+            abaAtual = tab.dataset.aba;
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('ativo', t === tab));
+            const ehDash = abaAtual === 'dashboard';
+            document.getElementById('aba-pedidos').style.display = ehDash ? 'none' : '';
+            document.getElementById('aba-dashboard').style.display = ehDash ? '' : 'none';
+            document.getElementById('titulo-app').textContent = ehDash ? 'Dashboard' : 'Pedidos';
+            document.getElementById('novo-pedido').style.display = ehDash ? 'none' : '';
+            if (ehDash) renderDashboard();
+        });
+
+        // ===== DASHBOARD =====
+        function renderDashboard() {
+            const noPeriodo = pedidosNoPeriodo();
+            const ativos = noPeriodo.filter(p => p.status !== 'cancelado');
+            const pagos = noPeriodo.filter(p => p.status === 'pago');
+            const faturamento = pagos.reduce((s, p) => s + Number(p.total || 0), 0);
+            const ticket = pagos.length ? faturamento / pagos.length : 0;
+            const clientes = new Set(ativos.map(p => soDigitos(p.customer_phone)).filter(Boolean));
+            const cancelados = noPeriodo.filter(p => p.status === 'cancelado').length;
+
+            document.getElementById('kpis').innerHTML = `
+                <div class="kpi destaque"><div class="v">${fmtBRL(faturamento)}</div><div class="l">Faturamento (só pagos)</div></div>
+                <div class="kpi"><div class="v">${ativos.length}</div><div class="l">Pedidos (sem cancelados)</div></div>
+                <div class="kpi"><div class="v">${fmtBRL(ticket)}</div><div class="l">Ticket médio (pagos)</div></div>
+                <div class="kpi"><div class="v">${clientes.size}</div><div class="l">Clientes únicos</div></div>
+                <div class="kpi"><div class="v">${pagos.length}</div><div class="l">Pedidos pagos</div></div>
+                <div class="kpi"><div class="v">${cancelados}</div><div class="l">Cancelados</div></div>`;
+
+            const temDados = noPeriodo.length > 0;
+            document.getElementById('dash-vazio').style.display = temDados ? 'none' : 'block';
+            document.getElementById('paineis').style.display = temDados ? 'grid' : 'none';
+            Object.values(charts).forEach(c => c && c.destroy());
+            charts = {};
+            if (!temDados) return;
+
+            // Faturamento pago por dia
+            const porDia = {};
+            pagos.forEach(p => {
+                const dia = new Date(p.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                porDia[dia] = (porDia[dia] || 0) + Number(p.total || 0);
+            });
+            const dias = Object.keys(porDia).sort((a, b) => {
+                const [da, ma] = a.split('/').map(Number); const [db, mb] = b.split('/').map(Number);
+                return (ma - mb) || (da - db);
+            });
+            // Contagem por status
+            const statusCount = STATUS.map(s => noPeriodo.filter(p => p.status === s).length);
+            // Top produtos por unidade (pedidos não cancelados)
+            const prodQtd = {};
+            ativos.forEach(p => (Array.isArray(p.items) ? p.items : []).forEach(i => {
+                if (i.nome) prodQtd[i.nome] = (prodQtd[i.nome] || 0) + (Number(i.qtd) || 0);
+            }));
+            const topProd = Object.entries(prodQtd).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            // Top clientes por valor (por WhatsApp, não cancelados)
+            const cli = {};
+            ativos.forEach(p => {
+                const tel = soDigitos(p.customer_phone); if (!tel) return;
+                if (!cli[tel]) cli[tel] = { nome: p.customer_name || p.customer_phone, val: 0 };
+                cli[tel].val += Number(p.total || 0);
+            });
+            const topCli = Object.values(cli).sort((a, b) => b.val - a.val).slice(0, 5);
+
+            const cor = { novo: '#E8602C', confirmado: '#2D7DD2', entregue: '#7B61A8', pago: '#4A7C3A', cancelado: '#9A9A9A' };
+            const baseOpts = { responsive: true, maintainAspectRatio: false };
+
+            charts.vendas = new Chart(document.getElementById('ch-vendas'), {
+                type: 'line',
+                data: { labels: dias, datasets: [{ data: dias.map(d => porDia[d]), borderColor: '#4A7C3A', backgroundColor: 'rgba(74,124,58,0.15)', fill: true, tension: 0.3 }] },
+                options: { ...baseOpts, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+            charts.status = new Chart(document.getElementById('ch-status'), {
+                type: 'doughnut',
+                data: { labels: STATUS.map(s => STATUS_LABEL[s]), datasets: [{ data: statusCount, backgroundColor: STATUS.map(s => cor[s]) }] },
+                options: { ...baseOpts, plugins: { legend: { position: 'bottom' } } }
+            });
+            charts.produtos = new Chart(document.getElementById('ch-produtos'), {
+                type: 'bar',
+                data: { labels: topProd.map(x => x[0]), datasets: [{ data: topProd.map(x => x[1]), backgroundColor: '#E8602C' }] },
+                options: { ...baseOpts, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } }
+            });
+            document.getElementById('top-clientes').innerHTML = topCli.length
+                ? topCli.map(c => `<li><span>${esc(c.nome)}</span><span class="top-v">${fmtBRL(c.val)}</span></li>`).join('')
+                : '<li class="muted">Sem clientes com telefone no período.</li>';
+        }
+
+        // ===== EXPORTAR EXCEL =====
+        document.getElementById('exportar').addEventListener('click', () => {
+            const lista = pedidosVisiveis();
+            if (!lista.length) { alert('Não há pedidos para exportar com os filtros atuais.'); return; }
+            const linhas = lista.map(p => ({
+                'Código': p.code || '',
+                'Data': fmtData(p.created_at),
+                'Cliente': p.customer_name || '',
+                'WhatsApp': p.customer_phone || '',
+                'Itens': (Array.isArray(p.items) ? p.items : []).map(i => `${i.qtd}x ${i.nome}`).join('; '),
+                'Total': Number(p.total || 0),
+                'Status': STATUS_LABEL[p.status] || p.status,
+                'Notas': p.notes || ''
+            }));
+            const ws = XLSX.utils.json_to_sheet(linhas);
+            ws['!cols'] = [{ wch: 10 }, { wch: 14 }, { wch: 18 }, { wch: 16 }, { wch: 42 }, { wch: 10 }, { wch: 12 }, { wch: 24 }];
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Pedidos');
+            XLSX.writeFile(wb, `pedidos-gostim-${new Date().toISOString().slice(0, 10)}.xlsx`);
         });
 
         document.getElementById('atualizar').addEventListener('click', carregarPedidos);
